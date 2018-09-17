@@ -44,8 +44,32 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 		self::ERROR_DATE_STEP		=> "Field '{0}' requires date in predefined days interval '{1}' from start point '{2}'.",
 	];
 
+	/**
+	 * Field specific values (camel case) and their validator default values.
+	 * @var array
+	 */
+	protected static $fieldSpecificProperties = [
+		'min'		=> NULL, 
+		'max'		=> NULL, 
+		'step'		=> NULL,
+		'format'	=> NULL,
+	];
+
+	/**
+	 * String format mask to format given values in `Intl` extension `\DateTimeInterface` type
+	 * or string format mask to format given values in `integer` type by PHP `date()` function.
+	 * Example: `"Y-m-d" | "Y/m/d"`
+	 * @see http://php.net/manual/en/datetime.createfromformat.php
+	 * @see http://php.net/manual/en/function.date.php
+	 * @var string
+	 */
 	protected $format = NULL;
 
+	/**
+	 * Error messages replacements. How to get more human form shortcuts from 
+	 * PHP `date()` special chars to more human shortcuts.
+	 * @var array
+	 */
 	protected static $errorMessagesFormatReplacements = [
 		'd' => 'DD',
 		'j' => 'D',
@@ -78,52 +102,19 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 	 */
 	public function & SetField (\MvcCore\Ext\Forms\IField & $field) {
 		parent::SetField($field);
-		
-		if (!$field instanceof \MvcCore\Ext\Forms\Fields\IFormat)
-			$this->throwNewInvalidArgumentException(
-				"Field `".$field->GetName()."` doesn't implement interface `\\MvcCore\\Ext\\Forms\\Fields\\IFormat`."
-			);
-		
-		if (!$field instanceof \MvcCore\Ext\Forms\Fields\IMinMaxStepDates)
-			$this->throwNewInvalidArgumentException(
-				"Field `".$field->GetName()."` doesn't implement interface `\\MvcCore\\Ext\\Forms\\Fields\\IMinMaxStepDates`."
-			);
-
-		if ($this->format !== NULL && $field->GetFormat() === NULL) {
-			// if this validator is added into field as instance - check field if it has format attribute defined:
-			$field->SetFormat($this->format);
-		} else if ($this->format === NULL && $field->GetFormat() !== NULL) {
-			// if validator is added as string - get format property from field:
-			$this->format = $field->GetFormat();
-		}
 		if ($this->format === NULL) {
 			$this->throwNewInvalidArgumentException(
 				'No `format` property defined in current validator or in field.'	
 			);
 		}
-
-		$fieldMin = $field->GetMin();
-		if ($fieldMin !== NULL) {
-			$this->min = $fieldMin;
-		} else if ($this->min !== NULL && $fieldMin === NULL) {
-			$field->SetMin($this->min);
-		}
-		$fieldMax = $field->GetMax();
-		if ($fieldMax !== NULL) {
-			$this->max = $fieldMax;
-		} else if ($this->max !== NULL && $fieldMax === NULL) {
-			$field->SetMax($this->max);
-		}
-		$fieldStep = $field->GetStep();
-		if ($fieldStep !== NULL) {
-			$this->step = $fieldStep;
-		} else if ($this->step !== NULL && $fieldStep === NULL) {
-			$field->SetStep($this->step);
-		}
-
 		return $this;
 	}
 
+	/**
+	 * Validate submitted date format, min., max., step and remove dangerous characters.
+	 * @param string|array			$submitValue Raw user input.
+	 * @return string|array|NULL	Safe submitted value or `NULL` if not possible to return safe value.
+	 */
 	public function Validate ($rawSubmittedValue) {
 		$rawSubmittedValue = trim((string) $rawSubmittedValue);
 		$safeValue = preg_replace('#[^a-zA-Z0-9\:\.\-\,/ ]#', '', $rawSubmittedValue);
@@ -141,6 +132,11 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 		return $date;
 	}
 
+	/**
+	 * Validate submitted date min. and max. if necessary.
+	 * @param \DateTimeInterface $date 
+	 * @return \DateTimeInterface
+	 */
 	protected function & checkMinMax (\DateTimeInterface & $date) {
 		if ($this->min !== NULL && $date < $this->min) {
 			$this->field->AddValidationError(
@@ -157,6 +153,11 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 		return $date;
 	}
 
+	/**
+	 * Validate submitted date step if necessary.
+	 * @param \DateTimeInterface $date 
+	 * @return \DateTimeInterface
+	 */
 	protected function & checkStep ($date) {
 		if ($this->step !== NULL) {
 			$fieldValue = $this->field->GetValue();

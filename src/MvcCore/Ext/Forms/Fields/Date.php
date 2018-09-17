@@ -95,6 +95,20 @@ class Date
 	}
 
 	/**
+	 * Return field specific data for validator.
+	 * @param array $fieldPropsDefaultValidValues 
+	 * @return array
+	 */
+	public function & GetValidatorData ($fieldPropsDefaultValidValues = []) {
+		return [
+			'min'		=> $this->min, 
+			'max'		=> $this->max, 
+			'step'		=> $this->step,
+			'format'	=> $this->format,
+		];
+	}
+
+	/**
 	 * This INTERNAL method is called from `\MvcCore\Ext\Form` just before
 	 * field is naturally rendered. It sets up field for rendering process.
 	 * Do not use this method event if you don't develop any form field.
