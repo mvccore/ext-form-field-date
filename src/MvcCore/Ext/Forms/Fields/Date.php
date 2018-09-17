@@ -100,12 +100,13 @@ class Date
 	 * @return array
 	 */
 	public function & GetValidatorData ($fieldPropsDefaultValidValues = []) {
-		return [
+		$result = [
 			'min'		=> $this->min, 
 			'max'		=> $this->max, 
 			'step'		=> $this->step,
 			'format'	=> $this->format,
 		];
+		return $result;
 	}
 
 	/**
