@@ -156,11 +156,11 @@ class Date
 			'id'		=> $this->id,
 			'name'		=> $this->name,
 			'type'		=> $this->type,
-			'value'		=> htmlspecialchars(
+			'value'		=> htmlspecialchars_decode(htmlspecialchars(
 				($this->value instanceof \DateTimeInterface 
 					? $this->value->format($this->format)
 					: $this->value), 
-				ENT_QUOTES
+				ENT_QUOTES), ENT_QUOTES
 			),
 			'attrs'		=> strlen($attrsStr) > 0 ? ' ' . $attrsStr : '',
 		]);
