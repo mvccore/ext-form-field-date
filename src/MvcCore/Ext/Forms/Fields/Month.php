@@ -14,7 +14,7 @@
 namespace MvcCore\Ext\Forms\Fields;
 
 /**
- * Responsibility: init, predispatch and render `<input>` HTML element 
+ * Responsibility: init, pre-dispatch and render `<input>` HTML element 
  *				   with type `month` to select month number in year. `Month` 
  *				   field has it's own validator to check submitted value 
  *				   format/min/max/step and dangerous characters in 

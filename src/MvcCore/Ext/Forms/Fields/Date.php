@@ -14,7 +14,7 @@
 namespace MvcCore\Ext\Forms\Fields;
 
 /**
- * Responsibility: init, predispatch and render `<input>` HTML element 
+ * Responsibility: init, pre-dispatch and render `<input>` HTML element 
  *				   with types `date` and types `datetime-local`, `time`, 
  *				   `week` and `month` in extended classes. `Date` field and
  *				   it's extended fields have their own validator(s) to 
