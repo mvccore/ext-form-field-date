@@ -78,7 +78,7 @@ trait MinMaxStepDates
 	 * - `Month		=> "2017-01"`			(with `$field->format` = "Y-m";`)
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-min
-	 * @param bool $getFormatedString Get value as formated string by `$this->format`.
+	 * @param bool $getFormatedString Get value as formatted string by `$this->format`.
 	 * @return \DateTimeInterface|string|NULL
 	 */
 	public function GetMin ($getFormatedString = FALSE) {
@@ -102,6 +102,7 @@ trait MinMaxStepDates
 	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
 	 */
 	public function & SetMin ($min) {
+		/** @var $this \MvcCore\Ext\Forms\IField */
 		$this->min = $this->createDateTimeFromInput($min, TRUE);
 		return $this;
 	}
@@ -117,7 +118,7 @@ trait MinMaxStepDates
 	 * - `Month		=> "2018-06"`			(with `$field->format` = "Y-m";`)
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-max
-	 * @param bool $getFormatedString Get value as formated string by `$this->format`.
+	 * @param bool $getFormatedString Get value as formatted string by `$this->format`.
 	 * @return \DateTimeInterface|string|NULL
 	 */
 	public function GetMax ($getFormatedString = FALSE) {
@@ -141,6 +142,7 @@ trait MinMaxStepDates
 	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
 	 */
 	public function & SetMax ($max) {
+		/** @var $this \MvcCore\Ext\Forms\IField */
 		$this->max = $this->createDateTimeFromInput($max, TRUE);
 		return $this;
 	}
@@ -171,6 +173,7 @@ trait MinMaxStepDates
 	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
 	 */
 	public function & SetStep ($step) {
+		/** @var $this \MvcCore\Ext\Forms\IField */
 		$this->step = $step;
 		return $this;
 	}
@@ -178,7 +181,7 @@ trait MinMaxStepDates
 	/**
 	 * Create `\DateTimeInterface` value from given `\DateTimeInterface`
 	 * or from given `int` (UNIX timestamp) or from `string` value 
-	 * (formated by `date()` with `$this->format`) and return it.
+	 * (formatted by `date()` with `$this->format`) and return it.
 	 * @see http://php.net/manual/en/class.datetime.php
 	 * @param \DateTimeInterface|int|string $inputValue
 	 * @return \DateTimeInterface|NULL
@@ -194,14 +197,17 @@ trait MinMaxStepDates
 			$parsedValue = @date_create_from_format($this->format, $inputValue);
 			if ($parsedValue === FALSE) {
 				if ($throwException) $this->throwNewInvalidArgumentException(
-					"Value is not possible to parse into `\DateTimeInterface`: `$inputValue` by format: `$this->format`."
+					"Value is not possible to parse into `\DateTimeInterface`:"
+					." `$inputValue` by format: `$this->format`."
 				);
 			} else {
 				$newValue = $parsedValue;
 			}
 		} else if ($throwException) {
 			$this->throwNewInvalidArgumentException(
-				"Value is not possible to convert into `\DateTimeInterface`: `$inputValue`. Value has to be formated date string or UNIX epoch integer."
+				"Value is not possible to convert into `\DateTimeInterface`:"
+				." `$inputValue`. Value has to be formatted date string or UNIX"
+				." epoch integer."
 			);
 		}
 		return $newValue;

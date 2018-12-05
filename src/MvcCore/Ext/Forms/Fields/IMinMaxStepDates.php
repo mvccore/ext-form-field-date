@@ -38,7 +38,7 @@ interface IMinMaxStepDates
 	 * - `Month		=> "2017-01"`			(with `$field->format` = "Y-m";`)
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-min
-	 * @param bool $getFormatedString Get value as formated string by `$this->format`.
+	 * @param bool $getFormatedString Get value as formatted string by `$this->format`.
 	 * @return \DateTimeInterface|string|NULL
 	 */
 	public function GetMin ($getFormatedString = FALSE);
@@ -70,7 +70,7 @@ interface IMinMaxStepDates
 	 * - `Month		=> "2018-06"`			(with `$field->format` = "Y-m";`)
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-max
-	 * @param bool $getFormatedString Get value as formated string by `$this->format`.
+	 * @param bool $getFormatedString Get value as formatted string by `$this->format`.
 	 * @return \DateTimeInterface|string|NULL
 	 */
 	public function GetMax ($getFormatedString = FALSE);

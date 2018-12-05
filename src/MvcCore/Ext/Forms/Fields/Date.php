@@ -46,7 +46,7 @@ class Date
 
 	/**
 	 * Value is used as `\DateTimeInterface`,
-	 * but it could be set into field as formated `string`
+	 * but it could be set into field as formatted `string`
 	 * by `$this->format` or as `int` (Unix epoch).
 	 * @var \DateTimeInterface|NULL
 	 */
@@ -72,7 +72,7 @@ class Date
 	/**
 	 * Get value as `\DateTimeInterface`.
 	 * @see http://php.net/manual/en/class.datetime.php
-	 * @param bool $getFormatedString Get value as formated string by `$this->format`.
+	 * @param bool $getFormatedString Get value as formatted string by `$this->format`.
 	 * @return \DateTimeInterface|string|NULL
 	 */
 	public function GetValue ($getFormatedString = FALSE) {
@@ -90,6 +90,7 @@ class Date
 	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
 	 */
 	public function & SetValue ($value) {
+		/** @var $this \MvcCore\Ext\Forms\IField */
 		$this->value = $this->createDateTimeFromInput($value, TRUE);
 		return $this;
 	}
@@ -153,7 +154,9 @@ class Date
 		if (!$this->form->GetFormTagRenderingStatus()) 
 			$attrsStr .= $attrsStrSep . 'form="' . $this->form->GetId() . '"';
 		$formViewClass = $this->form->GetViewClass();
-		$result = $formViewClass::Format(static::$templates->control, [
+		/** @var $templates \stdClass */
+		$templates = static::$templates;
+		$result = $formViewClass::Format($templates->control, [
 			'id'		=> $this->id,
 			'name'		=> $this->name,
 			'type'		=> $this->type,

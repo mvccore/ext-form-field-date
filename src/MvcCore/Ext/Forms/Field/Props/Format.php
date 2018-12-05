@@ -60,6 +60,7 @@ trait Format
 	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
 	 */
 	public function & SetFormat ($format = 'Y-m-d') {
+		/** @var $this \MvcCore\Ext\Forms\IField */
 		$this->format = $format;
 		return $this;
 	}
