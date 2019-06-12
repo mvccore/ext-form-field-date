@@ -118,8 +118,10 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 	public function Validate ($rawSubmittedValue) {
 		$rawSubmittedValue = trim((string) $rawSubmittedValue);
 		$safeValue = preg_replace('#[^a-zA-Z0-9\:\.\-\,/ ]#', '', $rawSubmittedValue);
+		$safeValueLength = mb_strlen($safeValue);
+		if ($safeValueLength === 0) return NULL;
 		$date = @date_create_from_format($this->format, $safeValue);
-		if ($date === FALSE || mb_strlen($safeValue) !== mb_strlen($rawSubmittedValue)) {
+		if ($date === FALSE || $safeValueLength !== mb_strlen($rawSubmittedValue)) {
 			$this->field->AddValidationError(
 				static::GetErrorMessage(static::ERROR_DATE_INVALID),
 				[strtr($this->format, static::$errorMessagesFormatReplacements)]
