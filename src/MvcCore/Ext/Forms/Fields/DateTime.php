@@ -22,12 +22,6 @@ namespace MvcCore\Ext\Forms\Fields;
 class DateTime extends \MvcCore\Ext\Forms\Fields\Date
 {
 	/**
-	 * Possible values: `datetime-local`
-	 * @var string
-	 */
-	protected $type = 'datetime-local';
-
-	/**
 	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 
 	 * string format mask to format given values in `integer` type by PHP `date()` function.
 	 * Example: `"Y-m-d\TH:i"` for value like: `"2014-03-17 22:15"`.
@@ -35,7 +29,13 @@ class DateTime extends \MvcCore\Ext\Forms\Fields\Date
 	 * @see http://php.net/manual/en/function.date.php
 	 * @var string
 	 */
-	protected $format = 'Y-m-d\TH:i';
+	protected static $defaultFormat = 'Y-m-d\TH:i';
+
+	/**
+	 * Possible values: `datetime-local`
+	 * @var string
+	 */
+	protected $type = 'datetime-local';
 	
 	/**
 	 * Validators: 

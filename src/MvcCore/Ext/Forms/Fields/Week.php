@@ -23,18 +23,18 @@ namespace MvcCore\Ext\Forms\Fields;
 class Week extends \MvcCore\Ext\Forms\Fields\Date
 {
 	/**
-	 * Possible values: `week`.
-	 * @var string
-	 */
-	protected $type = 'week';
-
-	/**
 	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 
 	 * string format mask to format given values in `integer` type by PHP `date()` function.
 	 * Example: `"o-\WW"` for value like: `"2014-W30"`.
 	 * @var string
 	 */
-	protected $format = 'o-\WW';
+	protected static $defaultFormat = 'o-\WW';
+
+	/**
+	 * Possible values: `week`.
+	 * @var string
+	 */
+	protected $type = 'week';
 	
 	/**
 	 * Validators: 

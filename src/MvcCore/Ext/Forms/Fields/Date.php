@@ -35,6 +35,16 @@ class Date
 	use \MvcCore\Ext\Forms\Field\Props\Format;
 	use \MvcCore\Ext\Forms\Field\Props\DataList;
 	use \MvcCore\Ext\Forms\Field\Props\Wrapper;
+	
+	/**
+	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 
+	 * string format mask to format given values in `integer` type by PHP `date()` function.
+	 * Example: `"Y-m-d"` for value like: `"2014-03-17"`.
+	 * @see http://php.net/manual/en/datetime.createfromformat.php
+	 * @see http://php.net/manual/en/function.date.php
+	 * @var string
+	 */
+	protected static $defaultFormat = 'Y-m-d';
 
 	/**
 	 * Possible values: `date` and types `datetime-local`, 
@@ -60,7 +70,7 @@ class Date
 	 * @see http://php.net/manual/en/function.date.php
 	 * @var string
 	 */
-	protected $format = 'Y-m-d';
+	protected $format = NULL;
 
 	/**
 	 * Validators: 
@@ -105,7 +115,7 @@ class Date
 			'min'		=> $this->min, 
 			'max'		=> $this->max, 
 			'step'		=> $this->step,
-			'format'	=> $this->format,
+			'format'	=> static::$defaultFormat,
 		];
 		return $result;
 	}
@@ -132,18 +142,20 @@ class Date
 	 * @return string
 	 */
 	public function RenderControl () {
-		$attrsStr = $this->renderControlAttrsWithFieldVars([
+		$fieldVarsToAttrs = [
 			'list',
-		]);
+			'format'	=> 'data-format',
+		];
+		$attrsStr = $this->renderControlAttrsWithFieldVars($fieldVarsToAttrs);
 		$dateProps = [
 			'min'	=> $this->min,
 			'max'	=> $this->max, 
 			'step'	=> $this->step,
 		];
 		if ($dateProps['min'] instanceof \DateTimeInterface) 
-			$dateProps['min'] = $this->min->format($this->format);
+			$dateProps['min'] = $this->min->format(static::$defaultFormat);
 		if ($dateProps['max'] instanceof \DateTimeInterface) 
-			$dateProps['max'] = $this->max->format($this->format);
+			$dateProps['max'] = $this->max->format(static::$defaultFormat);
 		$attrsStrSep = strlen($attrsStr) > 0 ? ' ' : '';
 		foreach ($dateProps as $propName => $propValue) {
 			if ($propValue !== NULL) {
@@ -153,6 +165,15 @@ class Date
 		}
 		if (!$this->form->GetFormTagRenderingStatus()) 
 			$attrsStr .= $attrsStrSep . 'form="' . $this->form->GetId() . '"';
+		if ($this->format !== NULL) {
+			$valueByDefinedFormat = htmlspecialchars_decode(htmlspecialchars(
+				($this->value instanceof \DateTimeInterface 
+					? $this->value->format($this->format)
+					: $this->value), 
+				ENT_QUOTES), ENT_QUOTES
+			);
+			$attrsStr .= $attrsStrSep . 'data-value="' . $valueByDefinedFormat . '"';
+		}
 		$formViewClass = $this->form->GetViewClass();
 		/** @var $templates \stdClass */
 		$templates = static::$templates;
@@ -162,7 +183,7 @@ class Date
 			'type'		=> $this->type,
 			'value'		=> htmlspecialchars_decode(htmlspecialchars(
 				($this->value instanceof \DateTimeInterface 
-					? $this->value->format($this->format)
+					? $this->value->format(static::$defaultFormat)
 					: $this->value), 
 				ENT_QUOTES), ENT_QUOTES
 			),

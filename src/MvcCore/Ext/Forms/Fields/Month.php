@@ -23,18 +23,18 @@ namespace MvcCore\Ext\Forms\Fields;
 class Month extends \MvcCore\Ext\Forms\Fields\Date
 {
 	/**
-	 * Possible values: `month`.
-	 * @var string
-	 */
-	protected $type = 'month';
-
-	/**
 	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 
 	 * string format mask to format given values in `integer` type by PHP `date()` function.
 	 * Example: `"Y-m"` for value like: `"2014-18"`.
 	 * @var string
 	 */
-	protected $format = 'Y-m';
+	protected static $defaultFormat = 'Y-m';
+
+	/**
+	 * Possible values: `month`.
+	 * @var string
+	 */
+	protected $type = 'month';
 
 	/**
 	 * Validators: 
