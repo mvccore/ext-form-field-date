@@ -57,7 +57,7 @@ interface IMinMaxStepDates
 	 * @param \DateTimeInterface|string|int $min
 	 * @return \MvcCore\Ext\Forms\IField
 	 */
-	public function & SetMin ($min);
+	public function SetMin ($min);
 
 	/**
 	 * Get maximum value for `Date`, `Time`, `DateTime`, `Week` 
@@ -89,7 +89,7 @@ interface IMinMaxStepDates
 	 * @param \DateTimeInterface|string|int $max
 	 * @return \MvcCore\Ext\Forms\IField
 	 */
-	public function & SetMax ($max);
+	public function SetMax ($max);
 
 	/**
 	 * Get step value for `Date`, `Time`, `DateTime`, `Week` 
@@ -114,5 +114,5 @@ interface IMinMaxStepDates
 	 * @param int $step
 	 * @return \MvcCore\Ext\Forms\IField
 	 */
-	public function & SetStep ($step);
+	public function SetStep ($step);
 }

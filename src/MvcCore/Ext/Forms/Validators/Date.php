@@ -14,7 +14,7 @@
 namespace MvcCore\Ext\Forms\Validators;
 
 /**
- * Responsibility: Validate submitted date format, min., max., step and 
+ * Responsibility: Validate submitted date format, min., max., step and
  *				   remove dangerous characters.
  */
 class		Date
@@ -49,8 +49,8 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 	 * @var array
 	 */
 	protected static $fieldSpecificProperties = [
-		'min'		=> NULL, 
-		'max'		=> NULL, 
+		'min'		=> NULL,
+		'max'		=> NULL,
 		'step'		=> NULL,
 		'format'	=> NULL,
 	];
@@ -66,7 +66,7 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 	protected $format = NULL;
 
 	/**
-	 * Error messages replacements. How to get more human form shortcuts from 
+	 * Error messages replacements. How to get more human form shortcuts from
 	 * PHP `date()` special chars to more human shortcuts.
 	 * @var array
 	 */
@@ -93,18 +93,18 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 	];
 
 	/**
-	 * Set up field instance, where is validated value by this 
+	 * Set up field instance, where is validated value by this
 	 * validator during submit before every `Validate()` method call.
-	 * This method is also called once, when validator instance is separately 
+	 * This method is also called once, when validator instance is separately
 	 * added into already created field instance to process any field checking.
-	 * @param \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField $field 
+	 * @param \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField $field
 	 * @return \MvcCore\Ext\Forms\Validator|\MvcCore\Ext\Forms\IValidator
 	 */
-	public function & SetField (\MvcCore\Ext\Forms\IField & $field) {
+	public function SetField (\MvcCore\Ext\Forms\IField $field) {
 		parent::SetField($field);
 		if ($this->format === NULL) {
 			$this->throwNewInvalidArgumentException(
-				'No `format` property defined in current validator or in field.'	
+				'No `format` property defined in current validator or in field.'
 			);
 		}
 		return $this;
@@ -136,10 +136,10 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 
 	/**
 	 * Validate submitted date min. and max. if necessary.
-	 * @param \DateTimeInterface $date 
+	 * @param \DateTimeInterface $date
 	 * @return \DateTimeInterface
 	 */
-	protected function & checkMinMax (\DateTimeInterface & $date) {
+	protected function checkMinMax (\DateTimeInterface $date) {
 		if ($this->min !== NULL && $date < $this->min) {
 			$this->field->AddValidationError(
 				static::GetErrorMessage(static::ERROR_DATE_TO_LOW),
@@ -157,30 +157,26 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 
 	/**
 	 * Validate submitted date step if necessary.
-	 * @param \DateTimeInterface $date 
+	 * @param \DateTimeInterface $date
 	 * @return \DateTimeInterface
 	 */
-	protected function & checkStep ($date) {
+	protected function checkStep (\DateTimeInterface $date) {
 		if ($this->step !== NULL) {
 			$fieldValue = $this->field->GetValue();
 			if ($fieldValue instanceof \DateTimeInterface) {
 				$fieldType = $this->field->GetType();
 				$stepMatched = FALSE;
-				if ($fieldType == 'month') {
-					// months
-					$interval = new \DateInterval('P' . $this->step . 'M');
-				} else if ($fieldType == 'week') {
-					// weeks
-					$interval = new \DateInterval('P' . $this->step . 'W');
-				} else if ($fieldType == 'time') {
-					// seconds
-					$interval = new \DateInterval('P' . $this->step . 'S');
-				} else {
-					// date, datetime, datetime-local - days
-					$interval = new \DateInterval('P' . $this->step . 'D');
-				}
+				static $dateIntervalSpecs = [
+					'month'				=> 'M', // months
+					'week'				=> 'W', // weeks
+					'time'				=> 'S', // seconds
+					'date'				=> 'D', // days
+					'datetime'			=> 'D', // days
+					'datetime-local'	=> 'D', // days
+				];
+				$interval = new \DateInterval('P' . $this->step . $dateIntervalSpecs[$fieldType]);
 				$formatedDate = $date->format($this->format);
-				$datePeriod = new \DatePeriod($fieldValue, $interval, 2147483646);
+				$datePeriod = new \DatePeriod($fieldValue, $interval, PHP_INT_MAX);
 				$previousValue = $fieldValue;
 				$dateToCheckFrom = $fieldValue;
 				foreach ($datePeriod as $datePoint) {
@@ -191,7 +187,7 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates
 						$previousValue = $datePoint;
 					}
 				}
-				$datePeriod = new \DatePeriod($dateToCheckFrom, $interval, 2147483646);
+				$datePeriod = new \DatePeriod($dateToCheckFrom, $interval, PHP_INT_MAX);
 				$counter = 0;
 				foreach ($datePeriod as $datePoint) {
 					if ($counter > 3) break;

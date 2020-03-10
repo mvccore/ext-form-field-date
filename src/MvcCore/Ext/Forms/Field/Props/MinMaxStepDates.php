@@ -20,13 +20,13 @@ namespace MvcCore\Ext\Forms\Field\Props;
  *    - `\MvcCore\Ext\Forms\Fields\Month`
  *    - `\MvcCore\Ext\Forms\Fields\Time`
  *    - `\MvcCore\Ext\Forms\Fields\Week`
- * Trait contains properties, getters and setters for 
+ * Trait contains properties, getters and setters for
  * protected properties `min`, `max` and `step`.
  */
 trait MinMaxStepDates
 {
 	/**
-	 * Minimum value for `Date`, `Time`, `DateTime`, `Week` 
+	 * Minimum value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` field(s) in `string` value.
 	 * Example string values for date and time fields:
 	 * - `Date		=> "2017-01-01"`		(with `$field->format` = "Y-m-d";`)
@@ -41,7 +41,7 @@ trait MinMaxStepDates
 	protected $min = NULL;
 
 	/**
-	 * Maximum value for `Date`, `Time`, `DateTime`, `Week` 
+	 * Maximum value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` field(s) in `string` value.
 	 * Example string values for date and time fields:
 	 * - `Date		=> "2018-06-24"`		(with `$field->format` = "Y-m-d";`)
@@ -56,7 +56,7 @@ trait MinMaxStepDates
 	protected $max = NULL;
 
 	/**
-	 * Step value for `Date`, `Time`, `DateTime`, `Week` 
+	 * Step value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` fields, always in `integer`.
 	 * For `Date` and `DateTime` fields, step is `int`, number of days.
 	 * For `Time` fields, step is `int`, number of seconds.
@@ -68,7 +68,7 @@ trait MinMaxStepDates
 	protected $step = NULL;
 
 	/**
-	 * Get minimum value for `Date`, `Time`, `DateTime`, `Week` 
+	 * Get minimum value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` field(s) in `string` value.
 	 * Example string values for date and time fields:
 	 * - `Date		=> "2017-01-01"`		(with `$field->format` = "Y-m-d";`)
@@ -82,13 +82,13 @@ trait MinMaxStepDates
 	 * @return \DateTimeInterface|string|NULL
 	 */
 	public function GetMin ($getFormatedString = FALSE) {
-		return $getFormatedString 
-			? $this->min->format($this->format) 
+		return $getFormatedString
+			? $this->min->format($this->format)
 			: $this->min;
 	}
 
 	/**
-	 * Set minimum value for `Date`, `Time`, `DateTime`, `Week` 
+	 * Set minimum value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` field(s) in `string` value.
 	 * Example string values for date and time fields:
 	 * - `Date		=> "2017-01-01"`		(with `$field->format` = "Y-m-d";`)
@@ -101,14 +101,14 @@ trait MinMaxStepDates
 	 * @param \DateTimeInterface|string|int $min
 	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
 	 */
-	public function & SetMin ($min) {
+	public function SetMin ($min) {
 		/** @var $this \MvcCore\Ext\Forms\IField */
 		$this->min = $this->createDateTimeFromInput($min, TRUE);
 		return $this;
 	}
 
 	/**
-	 * Get maximum value for `Date`, `Time`, `DateTime`, `Week` 
+	 * Get maximum value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` field(s) in `string` value.
 	 * Example string values for date and time fields:
 	 * - `Date		=> "2018-06-24"`		(with `$field->format` = "Y-m-d";`)
@@ -122,13 +122,13 @@ trait MinMaxStepDates
 	 * @return \DateTimeInterface|string|NULL
 	 */
 	public function GetMax ($getFormatedString = FALSE) {
-		return $getFormatedString 
-			? $this->max->format($this->format) 
+		return $getFormatedString
+			? $this->max->format($this->format)
 			: $this->max;
 	}
 
 	/**
-	 * Set maximum value for `Date`, `Time`, `DateTime`, `Week` 
+	 * Set maximum value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` field(s) in `string` value.
 	 * Example string values for date and time fields:
 	 * - `Date		=> "2018-06-24"`		(with `$field->format` = "Y-m-d";`)
@@ -141,14 +141,14 @@ trait MinMaxStepDates
 	 * @param \DateTimeInterface|string|int $max
 	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
 	 */
-	public function & SetMax ($max) {
+	public function SetMax ($max) {
 		/** @var $this \MvcCore\Ext\Forms\IField */
 		$this->max = $this->createDateTimeFromInput($max, TRUE);
 		return $this;
 	}
 
 	/**
-	 * Get step value for `Date`, `Time`, `DateTime`, `Week` 
+	 * Get step value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` fields, always in `integer`.
 	 * For `Date` and `DateTime` fields, step is `int`, number of days.
 	 * For `Time` fields, step is `int`, number of seconds.
@@ -162,7 +162,7 @@ trait MinMaxStepDates
 	}
 
 	/**
-	 * Set step value for `Date`, `Time`, `DateTime`, `Week` 
+	 * Set step value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` fields, always in `integer`.
 	 * For `Date` and `DateTime` fields, step is `int`, number of days.
 	 * For `Time` fields, step is `int`, number of seconds.
@@ -172,7 +172,7 @@ trait MinMaxStepDates
 	 * @param int $step
 	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
 	 */
-	public function & SetStep ($step) {
+	public function SetStep ($step) {
 		/** @var $this \MvcCore\Ext\Forms\IField */
 		$this->step = $step;
 		return $this;
@@ -180,13 +180,13 @@ trait MinMaxStepDates
 
 	/**
 	 * Create `\DateTimeInterface` value from given `\DateTimeInterface`
-	 * or from given `int` (UNIX timestamp) or from `string` value 
+	 * or from given `int` (UNIX timestamp) or from `string` value
 	 * (formatted by `date()` with `$this->format`) and return it.
 	 * @see http://php.net/manual/en/class.datetime.php
 	 * @param \DateTimeInterface|int|string $inputValue
 	 * @return \DateTimeInterface|NULL
 	 */
-	protected function & createDateTimeFromInput ($inputValue, $throwException = FALSE) {
+	protected function createDateTimeFromInput ($inputValue, $throwException = FALSE) {
 		$newValue = NULL;
 		if ($inputValue instanceof \DateTimeInterface) {
 			$newValue = $inputValue;
@@ -198,7 +198,7 @@ trait MinMaxStepDates
 			if ($parsedValue === FALSE) {
 				if ($throwException) $this->throwNewInvalidArgumentException(
 					"Value is not possible to parse into `\DateTimeInterface`:"
-					." `$inputValue` by format: `$this->format`."
+					." `{$inputValue}` by format: `{$this->format}`."
 				);
 			} else {
 				$newValue = $parsedValue;
@@ -206,7 +206,7 @@ trait MinMaxStepDates
 		} else if ($throwException) {
 			$this->throwNewInvalidArgumentException(
 				"Value is not possible to convert into `\DateTimeInterface`:"
-				." `$inputValue`. Value has to be formatted date string or UNIX"
+				." `{$inputValue}`. Value has to be formatted date string or UNIX"
 				." epoch integer."
 			);
 		}

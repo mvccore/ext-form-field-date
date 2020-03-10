@@ -99,7 +99,7 @@ class Date
 	 * @param \DateTimeInterface|int|string $value
 	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
 	 */
-	public function & SetValue ($value) {
+	public function SetValue ($value) {
 		/** @var $this \MvcCore\Ext\Forms\IField */
 		$this->value = $this->createDateTimeFromInput($value, TRUE);
 		return $this;

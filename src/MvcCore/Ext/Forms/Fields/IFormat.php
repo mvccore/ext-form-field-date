@@ -44,5 +44,5 @@ interface IFormat
 	 * @param string $format
 	 * @return \MvcCore\Ext\Forms\IField
 	 */
-	public function & SetFormat ($format = 'Y-m-d');
+	public function SetFormat ($format = 'Y-m-d');
 }
