@@ -7,8 +7,8 @@
  * For the full copyright and license information, please view
  * the LICENSE.md file that are distributed with this source code.
  *
- * @copyright	Copyright (c) 2016 Tom Flídr (https://github.com/mvccore/mvccore)
- * @license		https://mvccore.github.io/docs/mvccore/4.0.0/LICENCE.md
+ * @copyright	Copyright (c) 2016 Tom Flidr (https://github.com/mvccore)
+ * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENCE.md
  */
 
 namespace MvcCore\Ext\Forms\Field\Props;
@@ -26,8 +26,8 @@ namespace MvcCore\Ext\Forms\Field\Props;
  *    - `\MvcCore\Ext\Forms\Validators\Time`
  *    - `\MvcCore\Ext\Forms\Validators\Week`
  */
-trait Format
-{
+trait Format {
+
 	/**
 	 * String format mask to format given values in `Intl` extension `\DateTimeInterface` type
 	 * or string format mask to format given values in `integer` type by PHP `date()` function.
@@ -57,10 +57,10 @@ trait Format
 	 * @see http://php.net/manual/en/datetime.createfromformat.php
 	 * @see http://php.net/manual/en/function.date.php
 	 * @param string $format
-	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
+	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetFormat ($format = 'Y-m-d') {
-		/** @var $this \MvcCore\Ext\Forms\IField */
+		/** @var $this \MvcCore\Ext\Forms\Field */
 		$this->format = $format;
 		return $this;
 	}

@@ -7,8 +7,8 @@
  * For the full copyright and license information, please view
  * the LICENSE.md file that are distributed with this source code.
  *
- * @copyright	Copyright (c) 2016 Tom Flídr (https://github.com/mvccore/mvccore)
- * @license		https://mvccore.github.io/docs/mvccore/4.0.0/LICENCE.md
+ * @copyright	Copyright (c) 2016 Tom Flidr (https://github.com/mvccore)
+ * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENCE.md
  */
 
 namespace MvcCore\Ext\Forms\Fields;
@@ -25,9 +25,9 @@ namespace MvcCore\Ext\Forms\Fields;
  *    - `\MvcCore\Ext\Forms\Fields\Week`
  * - `\MvcCore\Ext\Forms\Validators\Date`
  */
-interface IMinMaxStepDates
-{
-    /**
+interface IMinMaxStepDates {
+
+	/**
 	 * Get minimum value for `Date`, `Time`, `DateTime`, `Week` 
 	 * and `Month` field(s) in `string` value.
 	 * Example string values for date and time fields:
@@ -55,7 +55,7 @@ interface IMinMaxStepDates
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-min
 	 * @param \DateTimeInterface|string|int $min
-	 * @return \MvcCore\Ext\Forms\IField
+	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetMin ($min);
 
@@ -87,7 +87,7 @@ interface IMinMaxStepDates
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-max
 	 * @param \DateTimeInterface|string|int $max
-	 * @return \MvcCore\Ext\Forms\IField
+	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetMax ($max);
 
@@ -112,7 +112,7 @@ interface IMinMaxStepDates
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step
 	 * @param int $step
-	 * @return \MvcCore\Ext\Forms\IField
+	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetStep ($step);
 }

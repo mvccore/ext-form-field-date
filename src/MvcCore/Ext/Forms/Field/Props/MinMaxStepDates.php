@@ -7,8 +7,8 @@
  * For the full copyright and license information, please view
  * the LICENSE.md file that are distributed with this source code.
  *
- * @copyright	Copyright (c) 2016 Tom Flídr (https://github.com/mvccore/mvccore)
- * @license		https://mvccore.github.io/docs/mvccore/4.0.0/LICENCE.md
+ * @copyright	Copyright (c) 2016 Tom Flidr (https://github.com/mvccore)
+ * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENCE.md
  */
 
 namespace MvcCore\Ext\Forms\Field\Props;
@@ -23,8 +23,8 @@ namespace MvcCore\Ext\Forms\Field\Props;
  * Trait contains properties, getters and setters for
  * protected properties `min`, `max` and `step`.
  */
-trait MinMaxStepDates
-{
+trait MinMaxStepDates {
+
 	/**
 	 * Minimum value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` field(s) in `string` value.
@@ -99,10 +99,10 @@ trait MinMaxStepDates
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-min
 	 * @param \DateTimeInterface|string|int $min
-	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
+	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetMin ($min) {
-		/** @var $this \MvcCore\Ext\Forms\IField */
+		/** @var $this \MvcCore\Ext\Forms\Field */
 		$this->min = $this->createDateTimeFromInput($min, TRUE);
 		return $this;
 	}
@@ -139,10 +139,10 @@ trait MinMaxStepDates
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-max
 	 * @param \DateTimeInterface|string|int $max
-	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
+	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetMax ($max) {
-		/** @var $this \MvcCore\Ext\Forms\IField */
+		/** @var $this \MvcCore\Ext\Forms\Field */
 		$this->max = $this->createDateTimeFromInput($max, TRUE);
 		return $this;
 	}
@@ -170,10 +170,10 @@ trait MinMaxStepDates
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step
 	 * @param int $step
-	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
+	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetStep ($step) {
-		/** @var $this \MvcCore\Ext\Forms\IField */
+		/** @var $this \MvcCore\Ext\Forms\Field */
 		$this->step = $step;
 		return $this;
 	}

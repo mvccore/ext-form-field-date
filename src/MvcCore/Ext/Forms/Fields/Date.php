@@ -7,8 +7,8 @@
  * For the full copyright and license information, please view
  * the LICENSE.md file that are distributed with this source code.
  *
- * @copyright	Copyright (c) 2016 Tom Flídr (https://github.com/mvccore/mvccore)
- * @license		https://mvccore.github.io/docs/mvccore/4.0.0/LICENCE.md
+ * @copyright	Copyright (c) 2016 Tom Flidr (https://github.com/mvccore)
+ * @license		https://mvccore.github.io/docs/mvccore/5.0.0/LICENCE.md
  */
 
 namespace MvcCore\Ext\Forms\Fields;
@@ -21,14 +21,14 @@ namespace MvcCore\Ext\Forms\Fields;
  *				   check submitted value format/min/max/step and dangerous 
  *				   characters in submitted date/time value(s).
  */
-class Date 
-	extends		\MvcCore\Ext\Forms\Field
-	implements	\MvcCore\Ext\Forms\Fields\IVisibleField, 
-				\MvcCore\Ext\Forms\Fields\ILabel,
-				\MvcCore\Ext\Forms\Fields\IMinMaxStepDates,
-				\MvcCore\Ext\Forms\Fields\IFormat,
-				\MvcCore\Ext\Forms\Fields\IDataList
-{
+class		Date 
+extends		\MvcCore\Ext\Forms\Field
+implements	\MvcCore\Ext\Forms\Fields\IVisibleField, 
+			\MvcCore\Ext\Forms\Fields\ILabel,
+			\MvcCore\Ext\Forms\Fields\IMinMaxStepDates,
+			\MvcCore\Ext\Forms\Fields\IFormat,
+			\MvcCore\Ext\Forms\Fields\IDataList {
+
 	use \MvcCore\Ext\Forms\Field\Props\VisibleField;
 	use \MvcCore\Ext\Forms\Field\Props\Label;
 	use \MvcCore\Ext\Forms\Field\Props\MinMaxStepDates;
@@ -36,6 +36,13 @@ class Date
 	use \MvcCore\Ext\Forms\Field\Props\DataList;
 	use \MvcCore\Ext\Forms\Field\Props\Wrapper;
 	
+	/**
+	 * MvcCore Extension - Form - Field - Date - version:
+	 * Comparison by PHP function version_compare();
+	 * @see http://php.net/manual/en/function.version-compare.php
+	 */
+	const VERSION = '5.0.0';
+
 	/**
 	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 
 	 * string format mask to format given values in `integer` type by PHP `date()` function.
@@ -97,10 +104,10 @@ class Date
 	 * and use it internally as `\DateTimeInterface`.
 	 * @see http://php.net/manual/en/class.datetime.php
 	 * @param \DateTimeInterface|int|string $value
-	 * @return \MvcCore\Ext\Forms\Field|\MvcCore\Ext\Forms\IField
+	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetValue ($value) {
-		/** @var $this \MvcCore\Ext\Forms\IField */
+		/** @var $this \MvcCore\Ext\Forms\Field */
 		$this->value = $this->createDateTimeFromInput($value, TRUE);
 		return $this;
 	}
