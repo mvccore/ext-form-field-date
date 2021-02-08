@@ -20,6 +20,7 @@ namespace MvcCore\Ext\Forms\Fields;
  *				   format/min/max/step and dangerous characters in 
  *				   submitted month value.
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Month extends \MvcCore\Ext\Forms\Fields\Date {
 
 	/**

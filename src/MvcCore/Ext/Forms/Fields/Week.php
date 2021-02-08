@@ -20,6 +20,7 @@ namespace MvcCore\Ext\Forms\Fields;
  *				   format/min/max/step and dangerous characters in 
  *				   submitted week value.
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Week extends \MvcCore\Ext\Forms\Fields\Date {
 
 	/**

@@ -19,6 +19,7 @@ namespace MvcCore\Ext\Forms\Fields;
  *				   own validator to check format, min., max., step and 
  *				   dangerous characters in submitted date value.
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class DateTime extends \MvcCore\Ext\Forms\Fields\Date {
 
 	/**

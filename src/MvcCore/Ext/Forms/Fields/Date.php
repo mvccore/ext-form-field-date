@@ -21,6 +21,7 @@ namespace MvcCore\Ext\Forms\Fields;
  *				   check submitted value format/min/max/step and dangerous 
  *				   characters in submitted date/time value(s).
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class		Date 
 extends		\MvcCore\Ext\Forms\Field
 implements	\MvcCore\Ext\Forms\Fields\IVisibleField, 
@@ -41,7 +42,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * Comparison by PHP function version_compare();
 	 * @see http://php.net/manual/en/function.version-compare.php
 	 */
-	const VERSION = '5.0.0';
+	const VERSION = '5.0.1';
 
 	/**
 	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 

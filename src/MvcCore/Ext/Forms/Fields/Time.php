@@ -20,6 +20,7 @@ namespace MvcCore\Ext\Forms\Fields;
  *				   format/min/max/step and dangerous characters in 
  *				   submitted time value.
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Time extends \MvcCore\Ext\Forms\Fields\Date {
 
 	/**
