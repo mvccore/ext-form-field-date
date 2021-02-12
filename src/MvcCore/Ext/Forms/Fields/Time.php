@@ -15,10 +15,10 @@ namespace MvcCore\Ext\Forms\Fields;
 
 /**
  * Responsibility: init, pre-dispatch and render `<input>` HTML element 
- *				   with type `time` to select time in day. `Time` 
- *				   field has it's own validator to check submitted value 
- *				   format/min/max/step and dangerous characters in 
- *				   submitted time value.
+ *                 with type `time` to select time in day. `Time` 
+ *                 field has it's own validator to check submitted value 
+ *                 format/min/max/step and dangerous characters in 
+ *                 submitted time value.
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Time extends \MvcCore\Ext\Forms\Fields\Date {
@@ -40,7 +40,7 @@ class Time extends \MvcCore\Ext\Forms\Fields\Date {
 	/**
 	 * Validators: 
 	 * - `Time` - to check format, min., max., step and dangerous characters in submitted date value.
-	 * @var string[]|\Closure[]
+	 * @var \string[]|\Closure[]
 	 */
 	protected $validators = ['Time'];
 }

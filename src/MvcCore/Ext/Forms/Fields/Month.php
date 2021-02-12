@@ -15,10 +15,10 @@ namespace MvcCore\Ext\Forms\Fields;
 
 /**
  * Responsibility: init, pre-dispatch and render `<input>` HTML element 
- *				   with type `month` to select month number in year. `Month` 
- *				   field has it's own validator to check submitted value 
- *				   format/min/max/step and dangerous characters in 
- *				   submitted month value.
+ *                 with type `month` to select month number in year. `Month` 
+ *                 field has it's own validator to check submitted value 
+ *                 format/min/max/step and dangerous characters in 
+ *                 submitted month value.
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Month extends \MvcCore\Ext\Forms\Fields\Date {
@@ -40,7 +40,7 @@ class Month extends \MvcCore\Ext\Forms\Fields\Date {
 	/**
 	 * Validators: 
 	 * - `Month` - to check format, min., max., step and dangerous characters in submitted date value.
-	 * @var string[]|\Closure[]
+	 * @var \string[]|\Closure[]
 	 */
 	protected $validators = ['Month'];
 }

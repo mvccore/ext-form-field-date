@@ -15,9 +15,9 @@ namespace MvcCore\Ext\Forms\Fields;
 
 /**
  * Responsibility: init, pre-dispatch and render `<input>` HTML element 
- *				   with type `datetime-local`. `DateTime` field has it's 
- *				   own validator to check format, min., max., step and 
- *				   dangerous characters in submitted date value.
+ *                 with type `datetime-local`. `DateTime` field has it's 
+ *                 own validator to check format, min., max., step and 
+ *                 dangerous characters in submitted date value.
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class DateTime extends \MvcCore\Ext\Forms\Fields\Date {
@@ -41,7 +41,7 @@ class DateTime extends \MvcCore\Ext\Forms\Fields\Date {
 	/**
 	 * Validators: 
 	 * - `DateTime` - to check format, min., max., step and dangerous characters in submitted date value.
-	 * @var string[]|\Closure[]
+	 * @var \string[]|\Closure[]
 	 */
 	protected $validators = ['DateTime'];
 }

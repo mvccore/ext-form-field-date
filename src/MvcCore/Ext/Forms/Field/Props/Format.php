@@ -56,7 +56,7 @@ trait Format {
 	 * Example: `$field->SetFormat("Y-m-d") | $field->SetFormat("Y/m/d");`
 	 * @see http://php.net/manual/en/datetime.createfromformat.php
 	 * @see http://php.net/manual/en/function.date.php
-	 * @param string $format
+	 * @param  string $format
 	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetFormat ($format = 'Y-m-d') {

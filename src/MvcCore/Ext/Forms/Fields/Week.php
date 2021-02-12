@@ -15,10 +15,10 @@ namespace MvcCore\Ext\Forms\Fields;
 
 /**
  * Responsibility: init, pre-dispatch and render `<input>` HTML element 
- *				   with type `week` to select week number in year. `Week` 
- *				   field has it's own validator to check submitted value 
- *				   format/min/max/step and dangerous characters in 
- *				   submitted week value.
+ *                 with type `week` to select week number in year. `Week` 
+ *                 field has it's own validator to check submitted value 
+ *                 format/min/max/step and dangerous characters in 
+ *                 submitted week value.
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class Week extends \MvcCore\Ext\Forms\Fields\Date {
@@ -40,7 +40,7 @@ class Week extends \MvcCore\Ext\Forms\Fields\Date {
 	/**
 	 * Validators: 
 	 * - `Week` - to check format, min., max., step and dangerous characters in submitted date value.
-	 * @var string[]|\Closure[]
+	 * @var \string[]|\Closure[]
 	 */
 	protected $validators = ['Week'];
 }

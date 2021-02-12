@@ -15,11 +15,11 @@ namespace MvcCore\Ext\Forms\Fields;
 
 /**
  * Responsibility: init, pre-dispatch and render `<input>` HTML element 
- *				   with types `date` and types `datetime-local`, `time`, 
- *				   `week` and `month` in extended classes. `Date` field and
- *				   it's extended fields have their own validator(s) to 
- *				   check submitted value format/min/max/step and dangerous 
- *				   characters in submitted date/time value(s).
+ *                 with types `date` and types `datetime-local`, `time`, 
+ *                 `week` and `month` in extended classes. `Date` field and
+ *                 it's extended fields have their own validator(s) to 
+ *                 check submitted value format/min/max/step and dangerous 
+ *                 characters in submitted date/time value(s).
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class		Date 
@@ -42,7 +42,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * Comparison by PHP function version_compare();
 	 * @see http://php.net/manual/en/function.version-compare.php
 	 */
-	const VERSION = '5.0.1';
+	const VERSION = '5.1.2';
 
 	/**
 	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 
@@ -83,14 +83,14 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	/**
 	 * Validators: 
 	 * - `Date` - to check format, min., max., step and dangerous characters in submitted date value.
-	 * @var string[]|\Closure[]
+	 * @var \string[]|\Closure[]
 	 */
 	protected $validators = ['Date'];
 
 	/**
 	 * Get value as `\DateTimeInterface`.
-	 * @see http://php.net/manual/en/class.datetime.php
-	 * @param bool $getFormatedString Get value as formatted string by `$this->format`.
+	 * @see    http://php.net/manual/en/class.datetime.php
+	 * @param  bool $getFormatedString Get value as formatted string by `$this->format`.
 	 * @return \DateTimeInterface|string|NULL
 	 */
 	public function GetValue ($getFormatedString = FALSE) {
@@ -103,8 +103,8 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * Set value as `\DateTimeInterface` or `int` (UNIX timestamp) or 
 	 * formatted `string` value by `date()` by `$this->format` 
 	 * and use it internally as `\DateTimeInterface`.
-	 * @see http://php.net/manual/en/class.datetime.php
-	 * @param \DateTimeInterface|int|string $value
+	 * @see    http://php.net/manual/en/class.datetime.php
+	 * @param  \DateTimeInterface|int|string $value
 	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetValue ($value) {
@@ -115,7 +115,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 
 	/**
 	 * Return field specific data for validator.
-	 * @param array $fieldPropsDefaultValidValues 
+	 * @param  array $fieldPropsDefaultValidValues 
 	 * @return array
 	 */
 	public function & GetValidatorData ($fieldPropsDefaultValidValues = []) {

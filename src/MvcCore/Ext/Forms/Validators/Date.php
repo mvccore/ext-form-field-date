@@ -15,7 +15,7 @@ namespace MvcCore\Ext\Forms\Validators;
 
 /**
  * Responsibility: Validate submitted date format, min., max., step and
- *				   remove dangerous characters.
+ *                 remove dangerous characters.
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class		Date
@@ -98,7 +98,7 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 	 * validator during submit before every `Validate()` method call.
 	 * This method is also called once, when validator instance is separately
 	 * added into already created field instance to process any field checking.
-	 * @param \MvcCore\Ext\Forms\Field $field
+	 * @param  \MvcCore\Ext\Forms\Field $field
 	 * @return \MvcCore\Ext\Forms\Validator
 	 */
 	public function SetField (\MvcCore\Ext\Forms\IField $field) {
@@ -113,8 +113,8 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 
 	/**
 	 * Validate submitted date format, min., max., step and remove dangerous characters.
-	 * @param string|array			$submitValue Raw user input.
-	 * @return string|array|NULL	Safe submitted value or `NULL` if not possible to return safe value.
+	 * @param  string|array      $rawSubmittedValue Raw user input.
+	 * @return string|array|NULL Safe submitted value or `NULL` if not possible to return safe value.
 	 */
 	public function Validate ($rawSubmittedValue) {
 		$rawSubmittedValue = trim((string) $rawSubmittedValue);
@@ -137,7 +137,7 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 
 	/**
 	 * Validate submitted date min. and max. if necessary.
-	 * @param \DateTimeInterface $date
+	 * @param  \DateTimeInterface $date
 	 * @return \DateTimeInterface
 	 */
 	protected function checkMinMax (\DateTimeInterface $date) {
@@ -158,7 +158,7 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 
 	/**
 	 * Validate submitted date step if necessary.
-	 * @param \DateTimeInterface $date
+	 * @param  \DateTimeInterface $date
 	 * @return \DateTimeInterface
 	 */
 	protected function checkStep (\DateTimeInterface $date) {

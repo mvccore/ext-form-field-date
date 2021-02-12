@@ -15,8 +15,8 @@ namespace MvcCore\Ext\Forms\Fields;
 
 /**
  * Responsibility: define getters and setters for field properties: `min`, 
- *				   `max` and `step`, for fields with type `date` and extended 
- *				   field types from `date` type.
+ *                 `max` and `step`, for fields with type `date` and extended 
+ *                 field types from `date` type.
  * Interface for classes:
  * - `\MvcCore\Ext\Forms\Fields\Date`
  *    - `\MvcCore\Ext\Forms\Fields\DateTime`
@@ -38,7 +38,7 @@ interface IMinMaxStepDates {
 	 * - `Month		=> "2017-01"`			(with `$field->format` = "Y-m";`)
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-min
-	 * @param bool $getFormatedString Get value as formatted string by `$this->format`.
+	 * @param  bool $getFormatedString Get value as formatted string by `$this->format`.
 	 * @return \DateTimeInterface|string|NULL
 	 */
 	public function GetMin ($getFormatedString = FALSE);
@@ -54,7 +54,7 @@ interface IMinMaxStepDates {
 	 * - `Month		=> "2017-01"`			(with `$field->format` = "Y-m";`)
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-min
-	 * @param \DateTimeInterface|string|int $min
+	 * @param  \DateTimeInterface|string|int $min
 	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetMin ($min);
@@ -70,7 +70,7 @@ interface IMinMaxStepDates {
 	 * - `Month		=> "2018-06"`			(with `$field->format` = "Y-m";`)
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-max
-	 * @param bool $getFormatedString Get value as formatted string by `$this->format`.
+	 * @param  bool $getFormatedString Get value as formatted string by `$this->format`.
 	 * @return \DateTimeInterface|string|NULL
 	 */
 	public function GetMax ($getFormatedString = FALSE);
@@ -86,7 +86,7 @@ interface IMinMaxStepDates {
 	 * - `Month		=> "2018-06"`			(with `$field->format` = "Y-m";`)
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-max
-	 * @param \DateTimeInterface|string|int $max
+	 * @param  \DateTimeInterface|string|int $max
 	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetMax ($max);
@@ -111,7 +111,7 @@ interface IMinMaxStepDates {
 	 * For `Week` and `Month` fields, step is `int`, number of weeks or months...
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step
-	 * @param int $step
+	 * @param  int $step
 	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetStep ($step);
