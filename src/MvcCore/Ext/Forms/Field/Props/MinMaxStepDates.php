@@ -203,7 +203,7 @@ trait MinMaxStepDates {
 			} else {
 				$newValue = $parsedValue;
 			}
-		} else if ($throwException) {
+		} else if ($inputValue !== NULL && $throwException) {
 			$this->throwNewInvalidArgumentException(
 				"Value is not possible to convert into `\DateTimeInterface`:"
 				." `{$inputValue}`. Value has to be formatted date string or UNIX"
