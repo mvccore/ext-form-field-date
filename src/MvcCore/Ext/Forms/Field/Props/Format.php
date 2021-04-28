@@ -25,6 +25,7 @@ namespace MvcCore\Ext\Forms\Field\Props;
  *    - `\MvcCore\Ext\Forms\Validators\Month`
  *    - `\MvcCore\Ext\Forms\Validators\Time`
  *    - `\MvcCore\Ext\Forms\Validators\Week`
+ * @mixin \MvcCore\Ext\Forms\Field
  */
 trait Format {
 
@@ -60,7 +61,6 @@ trait Format {
 	 * @return \MvcCore\Ext\Forms\Field
 	 */
 	public function SetFormat ($format = 'Y-m-d') {
-		/** @var $this \MvcCore\Ext\Forms\Field */
 		$this->format = $format;
 		return $this;
 	}
