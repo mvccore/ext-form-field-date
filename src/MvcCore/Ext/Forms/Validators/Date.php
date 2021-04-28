@@ -93,6 +93,78 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 		'u' => '0-999999',
 	];
 
+
+	/**
+	 * Create date validator instance.
+	 * 
+	 * @param  array                         $cfg
+	 * Config array with protected properties and it's 
+	 * values which you want to configure, presented 
+	 * in camel case properties names syntax.
+	 *
+	 * @param  string                        $format
+	 * Format mask to format given values in `Intl` extension `\DateTimeInterface` type
+	 * or string format mask to format given values in `integer` type by PHP `date()` function.
+	 * Example: `$field->SetFormat("Y-m-d") | $field->SetFormat("Y/m/d");`
+	 * 
+	 * @param  \DateTimeInterface|string|int $min
+	 * Minimum value for `Date`, `Time`, `DateTime`, `Week`
+	 * and `Month` field(s) in `string` value.
+	 * Example string values for date and time fields:
+	 * - `Date		=> "2017-01-01"`		(with `$field->format` = "Y-m-d";`)
+	 * - `Time		=> "14:00"`				(with `$field->format` = "H:i";`)
+	 * - `DateTime	=> "2017-01-01 14:00"`	(with `$field->format` = "Y-m-d H:i";`)
+	 * - `Week		=> "2017-W01"`			(with `$field->format` = "o-\WW";`)
+	 * - `Month		=> "2017-01"`			(with `$field->format` = "Y-m";`)
+	 * @param  \DateTimeInterface|string|int $max
+	 * Maximum value for `Date`, `Time`, `DateTime`, `Week`
+	 * and `Month` field(s) in `string` value.
+	 * Example string values for date and time fields:
+	 * - `Date		=> "2018-06-24"`		(with `$field->format` = "Y-m-d";`)
+	 * - `Time		=> "20:00"`				(with `$field->format` = "H:i";`)
+	 * - `DateTime	=> "2018-06-24 20:00"`	(with `$field->format` = "Y-m-d H:i";`)
+	 * - `Week		=> "2018-W25"`			(with `$field->format` = "o-\WW";`)
+	 * - `Month		=> "2018-06"`			(with `$field->format` = "Y-m";`)
+	 * @param  int|float                     $step
+	 * Step value for `Date`, `Time`, `DateTime`, `Week`
+	 * and `Month` fields, always in `integer`.
+	 * For `Date` and `DateTime` fields, step is `int`, number of days.
+	 * For `Time` fields, step is `int`, number of seconds.
+	 * For `Week` and `Month` fields, step is `int`, number of weeks or months...
+	 * 
+	 * @throws \InvalidArgumentException 
+	 * @return void
+	 */
+	public function __construct(
+		array $cfg = [],
+		$format = NULL,
+		$min = NULL,
+		$max = NULL,
+		$step = NULL
+	) {
+		$this->consolidateCfg($cfg, func_get_args(), func_num_args());
+		parent::__construct($cfg);
+	}
+	
+	/**
+	 * Set error messages replacements. How to get more human form shortcuts from
+	 * PHP `date()` special chars to more human shortcuts.
+	 * @param  array $errorMessagesFormatReplacements 
+	 * @return array
+	 */
+	public static function SetErrorMessagesFormatReplacements (array $errorMessagesFormatReplacements) {
+		return static::$errorMessagesFormatReplacements = $errorMessagesFormatReplacements;
+	}
+
+	/**
+	 * Get error messages replacements. How to get more human form shortcuts from
+	 * PHP `date()` special chars to more human shortcuts.
+	 * @return array
+	 */
+	public static function GetErrorMessagesFormatReplacements () {
+		return static::$errorMessagesFormatReplacements;
+	} 
+	
 	/**
 	 * Set up field instance, where is validated value by this
 	 * validator during submit before every `Validate()` method call.
