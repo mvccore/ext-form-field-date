@@ -22,6 +22,7 @@ namespace MvcCore\Ext\Forms\Field\Props;
  *    - `\MvcCore\Ext\Forms\Fields\Week`
  * Trait contains properties, getters and setters for
  * protected properties `min`, `max` and `step`.
+ * @mixin \MvcCore\Ext\Forms\Field
  */
 trait MinMaxStepDates {
 
@@ -99,10 +100,9 @@ trait MinMaxStepDates {
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-min
 	 * @param  \DateTimeInterface|string|int $min
-	 * @return \MvcCore\Ext\Forms\Field
+	 * @return \MvcCore\Ext\Forms\Fields\Date
 	 */
 	public function SetMin ($min) {
-		/** @var $this \MvcCore\Ext\Forms\Field */
 		$this->min = $this->createDateTimeFromInput($min, TRUE);
 		return $this;
 	}
@@ -139,10 +139,9 @@ trait MinMaxStepDates {
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-max
 	 * @param  \DateTimeInterface|string|int $max
-	 * @return \MvcCore\Ext\Forms\Field
+	 * @return \MvcCore\Ext\Forms\Fields\Date
 	 */
 	public function SetMax ($max) {
-		/** @var $this \MvcCore\Ext\Forms\Field */
 		$this->max = $this->createDateTimeFromInput($max, TRUE);
 		return $this;
 	}
@@ -170,10 +169,9 @@ trait MinMaxStepDates {
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step
 	 * @param  int $step
-	 * @return \MvcCore\Ext\Forms\Field
+	 * @return \MvcCore\Ext\Forms\Fields\Date
 	 */
 	public function SetStep ($step) {
-		/** @var $this \MvcCore\Ext\Forms\Field */
 		$this->step = $step;
 		return $this;
 	}
@@ -194,11 +192,12 @@ trait MinMaxStepDates {
 			$newValue = new \DateTime();
 			$newValue->setTimestamp($inputValue);
 		} else if (is_string($inputValue)) {
-			$parsedValue = @date_create_from_format($this->format, $inputValue);
+			$format = $this->format !== NULL ? $this->format : static::$defaultFormat;
+			$parsedValue = @date_create_from_format($format, $inputValue);
 			if ($parsedValue === FALSE) {
 				if ($throwException) $this->throwNewInvalidArgumentException(
 					"Value is not possible to parse into `\DateTimeInterface`:"
-					." `{$inputValue}` by format: `{$this->format}`."
+					." `{$inputValue}` by format: `{$format}`."
 				);
 			} else {
 				$newValue = $parsedValue;
