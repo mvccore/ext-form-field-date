@@ -186,7 +186,7 @@ trait MinMaxStepDates {
 	 */
 	protected function createDateTimeFromInput ($inputValue, $throwException = FALSE) {
 		$newValue = NULL;
-		if ($inputValue instanceof \DateTimeInterface) {
+		if ($inputValue instanceof \DateTime || $inputValue instanceof \DateTimeImmutable) {// PHP 5.4 compatible
 			$newValue = $inputValue;
 		} else if (is_int($inputValue)) {
 			$newValue = new \DateTime();

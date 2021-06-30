@@ -212,7 +212,7 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 	 * @param  \DateTimeInterface $date
 	 * @return \DateTimeInterface
 	 */
-	protected function checkMinMax (\DateTimeInterface $date) {
+	protected function checkMinMax ($date) {
 		if ($this->min !== NULL && $date < $this->min) {
 			$this->field->AddValidationError(
 				static::GetErrorMessage(static::ERROR_DATE_TO_LOW),
@@ -233,10 +233,10 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 	 * @param  \DateTimeInterface $date
 	 * @return \DateTimeInterface
 	 */
-	protected function checkStep (\DateTimeInterface $date) {
+	protected function checkStep ($date) {
 		if ($this->step !== NULL) {
 			$fieldValue = $this->field->GetValue();
-			if ($fieldValue instanceof \DateTimeInterface) {
+			if ($fieldValue instanceof \DateTime || $fieldValue instanceof \DateTimeImmutable) { // PHP 5.4 compatible
 				$fieldType = $this->field->GetType();
 				$stepMatched = FALSE;
 				static $dateIntervalSpecs = [

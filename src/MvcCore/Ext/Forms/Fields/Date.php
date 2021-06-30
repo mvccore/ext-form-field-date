@@ -388,9 +388,9 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 			'step'	=> $this->step,
 		];
 		$format = $this->format !== NULL ? $this->format : static::$defaultFormat;
-		if ($dateProps['min'] instanceof \DateTimeInterface) 
+		if ($dateProps['min'] instanceof \DateTime || $dateProps['min'] instanceof \DateTimeImmutable) // PHP 5.4 compatible
 			$dateProps['min'] = $this->min->format($format);
-		if ($dateProps['max'] instanceof \DateTimeInterface) 
+		if ($dateProps['max'] instanceof \DateTime || $dateProps['max'] instanceof \DateTimeImmutable) // PHP 5.4 compatible
 			$dateProps['max'] = $this->max->format($format);
 		$attrsStrSep = strlen($attrsStr) > 0 ? ' ' : '';
 		foreach ($dateProps as $propName => $propValue) {
@@ -403,7 +403,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 			$attrsStr .= $attrsStrSep . 'form="' . $this->form->GetId() . '"';
 		if ($this->format !== NULL) {
 			$valueByDefinedFormat = htmlspecialchars_decode(htmlspecialchars(
-				($this->value instanceof \DateTimeInterface 
+				($this->value instanceof \DateTime || $this->value instanceof \DateTimeImmutable // PHP 5.4 compatible
 					? $this->value->format($this->format)
 					: $this->value), 
 				ENT_QUOTES), ENT_QUOTES
@@ -418,7 +418,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 			'name'		=> $this->name,
 			'type'		=> $this->type,
 			'value'		=> htmlspecialchars_decode(htmlspecialchars(
-				($this->value instanceof \DateTimeInterface 
+				($this->value instanceof \DateTime || $this->value instanceof \DateTimeImmutable // PHP 5.4 compatible
 					? $this->value->format($format)
 					: $this->value), 
 				ENT_QUOTES), ENT_QUOTES
