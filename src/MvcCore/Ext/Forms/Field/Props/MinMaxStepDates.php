@@ -64,7 +64,7 @@ trait MinMaxStepDates {
 	 * For `Week` and `Month` fields, step is `int`, number of weeks or months...
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step
-	 * @var int|NULL
+	 * @var int|string|NULL
 	 */
 	protected $step = NULL;
 
@@ -154,7 +154,7 @@ trait MinMaxStepDates {
 	 * For `Week` and `Month` fields, step is `int`, number of weeks or months...
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step
-	 * @return int|NULL
+	 * @return int|string|NULL
 	 */
 	public function GetStep () {
 		return $this->step;
@@ -168,7 +168,7 @@ trait MinMaxStepDates {
 	 * For `Week` and `Month` fields, step is `int`, number of weeks or months...
 	 * @see https://www.wufoo.com/html5/date-type/
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-step
-	 * @param  int $step
+	 * @param  int|string $step
 	 * @return \MvcCore\Ext\Forms\Fields\Date
 	 */
 	public function SetStep ($step) {

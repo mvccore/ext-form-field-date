@@ -42,7 +42,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * Comparison by PHP function version_compare();
 	 * @see http://php.net/manual/en/function.version-compare.php
 	 */
-	const VERSION = '5.1.7';
+	const VERSION = '5.1.8';
 
 	/**
 	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 
@@ -250,7 +250,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * - `DateTime	=> "2018-06-24 20:00"`	(with `$field->format` = "Y-m-d H:i";`)
 	 * - `Week		=> "2018-W25"`			(with `$field->format` = "o-\WW";`)
 	 * - `Month		=> "2018-06"`			(with `$field->format` = "Y-m";`)
-	 * @param  int|float                     $step
+	 * @param  int|float|string              $step
 	 * Step value for `Date`, `Time`, `DateTime`, `Week`
 	 * and `Month` fields, always in `integer`.
 	 * For `Date` and `DateTime` fields, step is `int`, number of days.
