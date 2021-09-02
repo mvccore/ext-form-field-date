@@ -42,7 +42,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * Comparison by PHP function version_compare();
 	 * @see http://php.net/manual/en/function.version-compare.php
 	 */
-	const VERSION = '5.1.8';
+	const VERSION = '5.1.9';
 
 	/**
 	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 
@@ -411,18 +411,16 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 			$attrsStr .= $attrsStrSep . 'data-value="' . $valueByDefinedFormat . '"';
 		}
 		$formViewClass = $this->form->GetViewClass();
+		$view = $this->form->GetView() ?: $this->form->GetController()->GetView();
 		/** @var \stdClass $templates */
 		$templates = static::$templates;
 		$result = $formViewClass::Format($templates->control, [
 			'id'		=> $this->id,
 			'name'		=> $this->name,
 			'type'		=> $this->type,
-			'value'		=> htmlspecialchars_decode(htmlspecialchars(
-				($this->value instanceof \DateTime || $this->value instanceof \DateTimeImmutable // PHP 5.4 compatible
-					? $this->value->format($format)
-					: $this->value), 
-				ENT_QUOTES), ENT_QUOTES
-			),
+			'value'		=> ($this->value instanceof \DateTime || $this->value instanceof \DateTimeImmutable) // PHP 5.4 compatible
+				? $this->value->format($format)
+				: $view->EscapeAttr($this->value),
 			'attrs'		=> strlen($attrsStr) > 0 ? ' ' . $attrsStr : '',
 		]);
 		return $this->renderControlWrapper($result);
