@@ -32,8 +32,8 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 
 	use \MvcCore\Ext\Forms\Field\Props\VisibleField;
 	use \MvcCore\Ext\Forms\Field\Props\Label;
-	use \MvcCore\Ext\Forms\Field\Props\MinMaxStepDates;
 	use \MvcCore\Ext\Forms\Field\Props\Format;
+	use \MvcCore\Ext\Forms\Field\Props\MinMaxStepDates;
 	use \MvcCore\Ext\Forms\Field\Props\DataList;
 	use \MvcCore\Ext\Forms\Field\Props\Wrapper;
 	

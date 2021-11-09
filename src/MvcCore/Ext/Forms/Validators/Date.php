@@ -57,16 +57,6 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 	];
 
 	/**
-	 * String format mask to format given values in `Intl` extension `\DateTimeInterface` type
-	 * or string format mask to format given values in `integer` type by PHP `date()` function.
-	 * Example: `"Y-m-d" | "Y/m/d"`
-	 * @see http://php.net/manual/en/datetime.createfromformat.php
-	 * @see http://php.net/manual/en/function.date.php
-	 * @var string
-	 */
-	protected $format = NULL;
-
-	/**
 	 * Error messages replacements. How to get more human form shortcuts from
 	 * PHP `date()` special chars to more human shortcuts.
 	 * @var array
@@ -92,6 +82,16 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 		's' => '00-59',
 		'u' => '0-999999',
 	];
+	
+	/**
+	 * String format mask to format given values in `Intl` extension `\DateTimeInterface` type
+	 * or string format mask to format given values in `integer` type by PHP `date()` function.
+	 * Example: `"Y-m-d" | "Y/m/d"`
+	 * @see http://php.net/manual/en/datetime.createfromformat.php
+	 * @see http://php.net/manual/en/function.date.php
+	 * @var string
+	 */
+	protected $format = NULL;
 
 
 	/**
