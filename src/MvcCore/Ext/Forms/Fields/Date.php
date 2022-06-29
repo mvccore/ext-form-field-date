@@ -381,7 +381,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 			'list',
 			'format'	=> 'data-format',
 		];
-		$attrsStr = $this->renderControlAttrsWithFieldVars($fieldVarsToAttrs);
+		$attrsStr = $this->RenderControlAttrsWithFieldVars($fieldVarsToAttrs);
 		$dateProps = [
 			'min'	=> $this->min,
 			'max'	=> $this->max, 
