@@ -20,9 +20,12 @@ namespace MvcCore\Ext\Forms\Validators;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class		Date
 extends		\MvcCore\Ext\Forms\Validator
-implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
+implements	\MvcCore\Ext\Forms\Fields\IFormat,
+			\MvcCore\Ext\Forms\Fields\ITimeZone,
+			\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 
 	use \MvcCore\Ext\Forms\Field\Props\Format;
+	use \MvcCore\Ext\Forms\Field\Props\TimeZone;
 	use \MvcCore\Ext\Forms\Field\Props\MinMaxStepDates;
 
 	/**
@@ -54,6 +57,7 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 		'max'		=> NULL,
 		'step'		=> NULL,
 		'format'	=> NULL,
+		'timeZone'	=> NULL,
 	];
 
 	/**
@@ -92,6 +96,16 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 	 * @var string
 	 */
 	protected $format = NULL;
+
+	/**
+	 * Field value time zone for internal `\DateTimeInterface` object.
+	 * This is usually the same time zone as database time zone.
+	 * This is not time zone for displaying, timezone for displaying is
+	 * configured by global `date_default_timezone_set()` from user object.
+	 * @see https://www.php.net/manual/en/timezones.php
+	 * @var \DateTimeZone|NULL
+	 */
+	protected $timeZone = NULL;
 
 
 	/**
@@ -175,11 +189,10 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 	 */
 	public function SetField (\MvcCore\Ext\Forms\IField $field) {
 		parent::SetField($field);
-		if ($this->format === NULL) {
+		if ($this->format === NULL)
 			$this->throwNewInvalidArgumentException(
 				'No `format` property defined in current validator or in field.'
 			);
-		}
 		return $this;
 	}
 
@@ -193,14 +206,15 @@ implements	\MvcCore\Ext\Forms\Fields\IMinMaxStepDates {
 		$safeValue = preg_replace('#[^a-zA-Z0-9\:\.\-\,/ ]#', '', $rawSubmittedValue);
 		$safeValueLength = mb_strlen($safeValue);
 		if ($safeValueLength === 0) return NULL;
-		$date = @date_create_from_format($this->format, $safeValue);
-		if ($date === FALSE || $safeValueLength !== mb_strlen($rawSubmittedValue)) {
+		$userTimeZone = new \DateTimeZone(date_default_timezone_get());		
+		$date = $this->field->CreateFromInput($safeValue, $userTimeZone, TRUE);
+		if ($date === NULL || $safeValueLength !== mb_strlen($rawSubmittedValue)) {
 			$this->field->AddValidationError(
 				static::GetErrorMessage(static::ERROR_DATE_INVALID),
 				[strtr($this->format, static::$errorMessagesFormatReplacements)]
 			);
-			$date = NULL;
 		} else {
+			$date = $this->ConvertTimeZone($date, TRUE);
 			$date = $this->checkMinMax($date);
 			$date = $this->checkStep($date);
 		}

@@ -26,13 +26,15 @@ class		Date
 extends		\MvcCore\Ext\Forms\Field
 implements	\MvcCore\Ext\Forms\Fields\IVisibleField, 
 			\MvcCore\Ext\Forms\Fields\ILabel,
-			\MvcCore\Ext\Forms\Fields\IMinMaxStepDates,
 			\MvcCore\Ext\Forms\Fields\IFormat,
+			\MvcCore\Ext\Forms\Fields\ITimeZone,
+			\MvcCore\Ext\Forms\Fields\IMinMaxStepDates,
 			\MvcCore\Ext\Forms\Fields\IDataList {
 
 	use \MvcCore\Ext\Forms\Field\Props\VisibleField;
 	use \MvcCore\Ext\Forms\Field\Props\Label;
 	use \MvcCore\Ext\Forms\Field\Props\Format;
+	use \MvcCore\Ext\Forms\Field\Props\TimeZone;
 	use \MvcCore\Ext\Forms\Field\Props\MinMaxStepDates;
 	use \MvcCore\Ext\Forms\Field\Props\DataList;
 	use \MvcCore\Ext\Forms\Field\Props\Wrapper;
@@ -76,9 +78,19 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * Example: `"Y-m-d"` for value like: `"2014-03-17"`.
 	 * @see http://php.net/manual/en/datetime.createfromformat.php
 	 * @see http://php.net/manual/en/function.date.php
-	 * @var string
+	 * @var string|NULL
 	 */
 	protected $format = NULL;
+
+	/**
+	 * Field value time zone for internal `\DateTimeInterface` object.
+	 * This is usually the same time zone as database time zone.
+	 * This is not time zone for displaying, timezone for displaying is
+	 * configured by global `date_default_timezone_set()` from user object.
+	 * @see https://www.php.net/manual/en/timezones.php
+	 * @var \DateTimeZone|NULL
+	 */
+	protected $timeZone = NULL;
 
 	/**
 	 * Validators: 
@@ -231,6 +243,11 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * Format mask to format given values in `Intl` extension `\DateTimeInterface` type
 	 * or string format mask to format given values in `integer` type by PHP `date()` function.
 	 * Example: `$field->SetFormat("Y-m-d") | $field->SetFormat("Y/m/d");`
+	 * @param  \DateTimeZone|string			 $timeZone
+	 * Field value time zone for internal `\DateTimeInterface` object.
+	 * This is usually the same time zone as database time zone.
+	 * This is not time zone for displaying, timezone for displaying is
+	 * configured by global `date_default_timezone_set()` from user object.
 	 * 
 	 * @param  \DateTimeInterface|string|int $min
 	 * Minimum value for `Date`, `Time`, `DateTime`, `Week`
@@ -296,6 +313,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 		array $labelAttrs = [],
 		
 		$format = NULL,
+		$timeZone = NULL,
 		$min = NULL,
 		$max = NULL,
 		$step = NULL,
@@ -303,10 +321,11 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 		$wrapper = NULL
 	) {
 		$this->consolidateCfg($cfg, func_get_args(), func_num_args());
-		if (isset($cfg['min']))		$this->SetMin($cfg['min']);
-		if (isset($cfg['max']))		$this->SetMax($cfg['max']);
-		if (isset($cfg['step']))	$this->SetStep($cfg['step']);
-		unset($cfg['min'], $cfg['max'], $cfg['step']);
+		if (isset($cfg['min']))			$this->SetMin($cfg['min']);
+		if (isset($cfg['max']))			$this->SetMax($cfg['max']);
+		if (isset($cfg['step']))		$this->SetStep($cfg['step']);
+		if (isset($cfg['timeZone']))	$this->SetTimezone($cfg['timeZone']);
+		unset($cfg['min'], $cfg['max'], $cfg['step'], $cfg['timezone']);
 		parent::__construct($cfg);
 	}
 
@@ -318,9 +337,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 */
 	public function GetValue ($getFormatedString = FALSE) {
 		return $getFormatedString
-			? $this->value->format(
-				$this->format !== NULL ? $this->format : static::$defaultFormat
-			)
+			? $this->Format($this->value)
 			: $this->value;
 	}
 	
@@ -334,7 +351,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 */
 	public function SetValue ($value) {
 		/** @var \MvcCore\Ext\Forms\Fields\Date $this */
-		$this->value = $this->createDateTimeFromInput($value, TRUE);
+		$this->value = $this->CreateFromInput($value, $this->timeZone, TRUE);
 		return $this;
 	}
 
@@ -351,6 +368,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 			'format'	=> $this->format !== NULL 
 				? $this->format 
 				: static::$defaultFormat,
+			'timeZone'	=> $this->timeZone
 		];
 		return $result;
 	}
@@ -387,40 +405,34 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 			'max'	=> $this->max, 
 			'step'	=> $this->step,
 		];
-		$format = $this->format !== NULL ? $this->format : static::$defaultFormat;
+		$view = $this->form->GetView() ?: $this->form->GetController()->GetView();
 		if ($dateProps['min'] instanceof \DateTime || $dateProps['min'] instanceof \DateTimeImmutable) // PHP 5.4 compatible
-			$dateProps['min'] = $this->min->format($format);
+			$dateProps['min'] = $this->Format($this->min);
 		if ($dateProps['max'] instanceof \DateTime || $dateProps['max'] instanceof \DateTimeImmutable) // PHP 5.4 compatible
-			$dateProps['max'] = $this->max->format($format);
+			$dateProps['max'] = $this->Format($this->max);
 		$attrsStrSep = strlen($attrsStr) > 0 ? ' ' : '';
 		foreach ($dateProps as $propName => $propValue) {
 			if ($propValue !== NULL) {
-				$attrsStr .= $attrsStrSep . $propName . '="' . $propValue . '"';
+				$attrsStr .= $attrsStrSep . $propName . '="' . $view->EscapeAttr($propValue) . '"';
 				$attrsStrSep = ' ';
 			}
 		}
 		if (!$this->form->GetFormTagRenderingStatus()) 
 			$attrsStr .= $attrsStrSep . 'form="' . $this->form->GetId() . '"';
-		if ($this->format !== NULL) {
-			$valueByDefinedFormat = htmlspecialchars_decode(htmlspecialchars(
-				($this->value instanceof \DateTime || $this->value instanceof \DateTimeImmutable // PHP 5.4 compatible
-					? $this->value->format($this->format)
-					: $this->value), 
-				ENT_QUOTES), ENT_QUOTES
-			);
-			$attrsStr .= $attrsStrSep . 'data-value="' . $valueByDefinedFormat . '"';
-		}
+		if ($this->value instanceof \DateTime || $this->value instanceof \DateTimeImmutable) // PHP 5.4 compatible
+			$attrsStr .= $attrsStrSep . 'data-value="' . $this->value->format('c') . '"';
 		$formViewClass = $this->form->GetViewClass();
-		$view = $this->form->GetView() ?: $this->form->GetController()->GetView();
 		/** @var \stdClass $templates */
 		$templates = static::$templates;
 		$result = $formViewClass::Format($templates->control, [
 			'id'		=> $this->id,
 			'name'		=> $this->name,
 			'type'		=> $this->type,
-			'value'		=> ($this->value instanceof \DateTime || $this->value instanceof \DateTimeImmutable) // PHP 5.4 compatible
-				? $this->value->format($format)
-				: $view->EscapeAttr($this->value),
+			'value'		=> $view->EscapeAttr(
+				$this->value instanceof \DateTime || $this->value instanceof \DateTimeImmutable // PHP 5.4 compatible
+					? $this->Format($this->value)
+					: ($this->value ?: '')
+			),
 			'attrs'		=> strlen($attrsStr) > 0 ? ' ' . $attrsStr : '',
 		]);
 		return $this->renderControlWrapper($result);

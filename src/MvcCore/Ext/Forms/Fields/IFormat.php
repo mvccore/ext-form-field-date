@@ -44,5 +44,25 @@ interface IFormat {
 	 * @param  string $format
 	 * @return \MvcCore\Ext\Forms\Field
 	 */
-	public function SetFormat ($format = 'Y-m-d');
+	public function SetFormat ($format);
+
+	/**
+	 * Format `\DateTime` in for control rendering.
+	 * @param  \DateTimeInterface|NULL $value 
+	 * @return string
+	 */
+	public function Format ($value);
+
+	/**
+	 * Create `\DateTimeInterface` value from given `\DateTimeInterface`
+	 * or from given `int` (UNIX timestamp) or from `string` value
+	 * (formatted by `date()` with `$this->format`) and return it.
+	 * @see http://php.net/manual/en/class.datetime.php
+	 * @param  \DateTimeInterface|int|string $inputValue
+	 * @param  \DateTimeZone|NULL            $timeZone
+	 * @param  bool                          $throwException Default `FALSE`.
+	 * @throws \InvalidArgumentException
+	 * @return \DateTimeInterface|NULL
+	 */
+	public function CreateFromInput ($inputValue, $timeZone = NULL, $throwException = FALSE);
 }

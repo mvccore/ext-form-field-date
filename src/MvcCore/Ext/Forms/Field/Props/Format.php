@@ -60,8 +60,59 @@ trait Format {
 	 * @param  string $format
 	 * @return \MvcCore\Ext\Forms\Field
 	 */
-	public function SetFormat ($format = 'Y-m-d') {
+	public function SetFormat ($format) {
 		$this->format = $format;
 		return $this;
 	}
+	
+	/**
+	 * Format `\DateTime` in for control rendering.
+	 * @param  \DateTimeInterface|NULL $value 
+	 * @return string
+	 */
+	public function Format ($value) {
+		if ($value === NULL) return '';
+		$userValue = $this->ConvertTimeZone($value, FALSE);
+		return $userValue->format($this->format ?: static::$defaultFormat);
+	}
+	
+	/**
+	 * Create `\DateTimeInterface` value from given `\DateTimeInterface`
+	 * or from given `int` (UNIX timestamp) or from `string` value
+	 * (formatted by `date()` with `$this->format`) and return it.
+	 * @see http://php.net/manual/en/class.datetime.php
+	 * @param  \DateTimeInterface|int|string $inputValue
+	 * @param  \DateTimeZone|NULL            $timeZone
+	 * @param  bool                          $throwException Default `FALSE`.
+	 * @throws \InvalidArgumentException
+	 * @return \DateTimeInterface|NULL
+	 */
+	public function CreateFromInput ($inputValue, $timeZone = NULL, $throwException = FALSE) {
+		$newValue = NULL;
+		if ($inputValue instanceof \DateTime || $inputValue instanceof \DateTimeImmutable) {// PHP 5.4 compatible
+			$newValue = $inputValue;
+		} else if (is_int($inputValue)) {
+			$newValue = new \DateTime();
+			$newValue->setTimestamp($inputValue);
+		} else if (is_string($inputValue)) {
+			$format = $this->format ?: static::$defaultFormat;
+			$parsedValue = @date_create_from_format($format, $inputValue, $timeZone);
+			if ($parsedValue !== FALSE) {
+				$newValue = $parsedValue;
+			} else {
+				if ($throwException) $this->throwNewInvalidArgumentException(
+					"Value is not possible to parse into `\DateTimeInterface`:"
+					." `{$inputValue}` by format: `{$format}`."
+				);
+			}
+		} else if ($inputValue !== NULL && $throwException) {
+			$this->throwNewInvalidArgumentException(
+				"Value is not possible to convert into `\DateTimeInterface`:"
+				." `{$inputValue}`. Value has to be formatted date string or UNIX"
+				." epoch integer."
+			);
+		}
+		return $newValue;
+	}
+
 }

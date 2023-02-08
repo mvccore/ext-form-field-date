@@ -84,7 +84,7 @@ trait MinMaxStepDates {
 	 */
 	public function GetMin ($getFormatedString = FALSE) {
 		return $getFormatedString
-			? $this->min->format($this->format)
+			? $this->Format($this->min, $this->format ?: static::$defaultFormat)
 			: $this->min;
 	}
 
@@ -103,7 +103,12 @@ trait MinMaxStepDates {
 	 * @return \MvcCore\Ext\Forms\Fields\Date
 	 */
 	public function SetMin ($min) {
-		$this->min = $this->createDateTimeFromInput($min, TRUE);
+		$this->min = (
+			!($min instanceof \DateTimeInterface) && 
+			$this instanceof \MvcCore\Ext\Forms\Fields\IFormat
+		)
+			? $this->CreateFromInput($min, $this->timeZone, TRUE)
+			: $min;
 		return $this;
 	}
 
@@ -123,7 +128,7 @@ trait MinMaxStepDates {
 	 */
 	public function GetMax ($getFormatedString = FALSE) {
 		return $getFormatedString
-			? $this->max->format($this->format)
+			? $this->Format($this->max, $this->format ?: static::$defaultFormat)
 			: $this->max;
 	}
 
@@ -142,7 +147,12 @@ trait MinMaxStepDates {
 	 * @return \MvcCore\Ext\Forms\Fields\Date
 	 */
 	public function SetMax ($max) {
-		$this->max = $this->createDateTimeFromInput($max, TRUE);
+		$this->max = (
+			!($max instanceof \DateTimeInterface) && 
+			$this instanceof \MvcCore\Ext\Forms\Fields\IFormat
+		)
+			? $this->CreateFromInput($max, $this->timeZone, TRUE)
+			: $max;
 		return $this;
 	}
 
@@ -175,40 +185,5 @@ trait MinMaxStepDates {
 		$this->step = $step;
 		return $this;
 	}
-
-	/**
-	 * Create `\DateTimeInterface` value from given `\DateTimeInterface`
-	 * or from given `int` (UNIX timestamp) or from `string` value
-	 * (formatted by `date()` with `$this->format`) and return it.
-	 * @see http://php.net/manual/en/class.datetime.php
-	 * @param  \DateTimeInterface|int|string $inputValue
-	 * @return \DateTimeInterface|NULL
-	 */
-	protected function createDateTimeFromInput ($inputValue, $throwException = FALSE) {
-		$newValue = NULL;
-		if ($inputValue instanceof \DateTime || $inputValue instanceof \DateTimeImmutable) {// PHP 5.4 compatible
-			$newValue = $inputValue;
-		} else if (is_int($inputValue)) {
-			$newValue = new \DateTime();
-			$newValue->setTimestamp($inputValue);
-		} else if (is_string($inputValue)) {
-			$format = $this->format !== NULL ? $this->format : static::$defaultFormat;
-			$parsedValue = @date_create_from_format($format, $inputValue);
-			if ($parsedValue === FALSE) {
-				if ($throwException) $this->throwNewInvalidArgumentException(
-					"Value is not possible to parse into `\DateTimeInterface`:"
-					." `{$inputValue}` by format: `{$format}`."
-				);
-			} else {
-				$newValue = $parsedValue;
-			}
-		} else if ($inputValue !== NULL && $throwException) {
-			$this->throwNewInvalidArgumentException(
-				"Value is not possible to convert into `\DateTimeInterface`:"
-				." `{$inputValue}`. Value has to be formatted date string or UNIX"
-				." epoch integer."
-			);
-		}
-		return $newValue;
-	}
+	
 }
