@@ -421,6 +421,10 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 			$attrsStr .= $attrsStrSep . 'form="' . $this->form->GetId() . '"';
 		if ($this->value instanceof \DateTime || $this->value instanceof \DateTimeImmutable) // PHP 5.4 compatible
 			$attrsStr .= $attrsStrSep . 'data-value="' . $this->value->format('c') . '"';
+		if ($this->timeZone instanceof \DateTimeZone) {
+			$attrsStr .= $attrsStrSep . 'data-timezone="' . $this->timeZone->getName() . '"';
+			$attrsStr .= $attrsStrSep . 'data-offset="' . $this->GetTimeZoneOffset($this->value, FALSE) . '"';
+		}
 		$formViewClass = $this->form->GetViewClass();
 		/** @var \stdClass $templates */
 		$templates = static::$templates;

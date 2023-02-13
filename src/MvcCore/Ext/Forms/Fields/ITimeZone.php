@@ -56,4 +56,11 @@ interface ITimeZone {
 	 */
 	public function ConvertTimeZone ($value, $fromUserInput = FALSE);
 
+	/**
+	 * Get value time zone offset as an integer.
+	 * @param  \DateTimeInterface $value 
+	 * @param  bool	              $fromUserInput 
+	 * @return int
+	 */
+	public function GetTimeZoneOffset ($value, $fromUserInput = FALSE);
 }

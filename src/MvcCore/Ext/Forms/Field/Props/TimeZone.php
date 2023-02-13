@@ -30,12 +30,12 @@ namespace MvcCore\Ext\Forms\Field\Props;
 trait TimeZone {
 
 	/**
-	 * String format mask to format given values in `Intl` extension `\DateTimeInterface` type
-	 * or string format mask to format given values in `integer` type by PHP `date()` function.
-	 * Example: `"Y-m-d" | "Y/m/d"`
-	 * @see http://php.net/manual/en/datetime.createfromformat.php
-	 * @see http://php.net/manual/en/function.date.php
-	 * @var string
+	 * Field value time zone for internal `\DateTimeInterface` object.
+	 * This is usually the same time zone as database time zone.
+	 * This is not time zone for displaying, timezone for displaying is
+	 * configured by global `date_default_timezone_set()` from user object.
+	 * @see https://www.php.net/manual/en/timezones.php
+	 * @var \DateTimeZone|NULL
 	 */
 	#protected $timeZone = NULL;
 	
@@ -99,6 +99,29 @@ trait TimeZone {
 			$offsetInterval = new \DateInterval("PT{$etaHours}H{$etaMinutes}M{$etaSeconds}S");
 			$offsetInterval->invert = $offset < 0 ? 1 : 0;
 			return $result->add($offsetInterval);
+		}
+	}
+
+	/**
+	 * Get value time zone offset as an integer.
+	 * @param  \DateTimeInterface $value 
+	 * @param  bool	              $fromUserInput 
+	 * @return int
+	 */
+	public function GetTimeZoneOffset ($value, $fromUserInput = FALSE) {
+		if ($this->timeZone === NULL) 
+			return 0;
+		$utcNow = new \DateTime('now', new \DateTimeZone('UTC'));
+		$valueOffset = $this->timeZone->getOffset($utcNow);
+		$userTimeZone = new \DateTimeZone(date_default_timezone_get());
+		$userOffset = $userTimeZone->getOffset($utcNow);
+		if ($userOffset === $valueOffset) {
+			return 0;
+		} else {
+			$offset = $fromUserInput
+				? $valueOffset - $userOffset
+				: $userOffset - $valueOffset;
+			return $offset;
 		}
 	}
 	
