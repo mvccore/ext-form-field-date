@@ -44,7 +44,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * Comparison by PHP function version_compare();
 	 * @see http://php.net/manual/en/function.version-compare.php
 	 */
-	const VERSION = '5.2.1';
+	const VERSION = '5.2.2';
 
 	/**
 	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 
@@ -399,7 +399,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 			'list',
 			'format'	=> 'data-format',
 		];
-		$attrsStr = $this->RenderControlAttrsWithFieldVars($fieldVarsToAttrs);
+		$attrsStrItems = [$this->RenderControlAttrsWithFieldVars($fieldVarsToAttrs)];
 		$dateProps = [
 			'min'	=> $this->min,
 			'max'	=> $this->max, 
@@ -410,20 +410,16 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 			$dateProps['min'] = $this->Format($this->min);
 		if ($dateProps['max'] instanceof \DateTime || $dateProps['max'] instanceof \DateTimeImmutable) // PHP 5.4 compatible
 			$dateProps['max'] = $this->Format($this->max);
-		$attrsStrSep = strlen($attrsStr) > 0 ? ' ' : '';
-		foreach ($dateProps as $propName => $propValue) {
-			if ($propValue !== NULL) {
-				$attrsStr .= $attrsStrSep . $propName . '="' . $view->EscapeAttr($propValue) . '"';
-				$attrsStrSep = ' ';
-			}
-		}
+		foreach ($dateProps as $propName => $propValue)
+			if ($propValue !== NULL)
+				$attrsStrItems[] = $propName . '="' . $view->EscapeAttr($propValue) . '"';
 		if (!$this->form->GetFormTagRenderingStatus()) 
-			$attrsStr .= $attrsStrSep . 'form="' . $this->form->GetId() . '"';
+			$attrsStrItems[] = 'form="' . $this->form->GetId() . '"';
 		if ($this->value instanceof \DateTime || $this->value instanceof \DateTimeImmutable) // PHP 5.4 compatible
-			$attrsStr .= $attrsStrSep . 'data-value="' . $this->value->format('c') . '"';
+			$attrsStrItems[] = 'data-value="' . $this->value->format('c') . '"';
 		if ($this->timeZone instanceof \DateTimeZone) {
-			$attrsStr .= $attrsStrSep . 'data-timezone="' . $this->timeZone->getName() . '"';
-			$attrsStr .= $attrsStrSep . 'data-offset="' . $this->GetTimeZoneOffset($this->value, FALSE) . '"';
+			$attrsStrItems[] = 'data-timezone="' . $this->timeZone->getName() . '"';
+			$attrsStrItems[] = 'data-offset="' . $this->GetTimeZoneOffset($this->value, FALSE) . '"';
 		}
 		$formViewClass = $this->form->GetViewClass();
 		/** @var \stdClass $templates */
@@ -437,7 +433,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 					? $this->Format($this->value)
 					: ($this->value ?: '')
 			),
-			'attrs'		=> strlen($attrsStr) > 0 ? ' ' . $attrsStr : '',
+			'attrs'		=> count($attrsStrItems) > 0 ? ' ' . implode(' ', $attrsStrItems) : '',
 		]);
 		return $this->renderControlWrapper($result);
 	}
