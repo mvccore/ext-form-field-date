@@ -73,9 +73,10 @@ trait TimeZone {
 	 * submitted value to server object time zone.
 	 * @param  \DateTimeInterface $value 
 	 * @param  bool	              $fromUserInput 
+	 * @param  bool               $moveTimeByZone
 	 * @return \DateTimeInterface
 	 */
-	public function ConvertTimeZone ($value, $fromUserInput = FALSE) {
+	public function ConvertTimeZone ($value, $fromUserInput = FALSE, $moveTimeByZone = TRUE) {
 		if ($this->timeZone === NULL) 
 			return $value;
 		$utcNow = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -83,22 +84,28 @@ trait TimeZone {
 		$userTimeZone = new \DateTimeZone(date_default_timezone_get());
 		$userOffset = $userTimeZone->getOffset($utcNow);
 		if ($userOffset === $valueOffset) {
+			// server timezone is the same as user timezone:
 			return $value;
 		} else {
-			$offset = $fromUserInput
-				? $valueOffset - $userOffset
-				: $userOffset - $valueOffset;
-			$offsetAbs = abs($offset);
+			// server timezone is different than user timezone, it 'necessary 
+			// if `$moveTimeByZone` to move back or forward time value by timezone:
 			$result = new \DateTime();
 			$result->setTimezone($fromUserInput ? $this->timeZone : $userTimeZone);
 			$result->setDate($value->format('Y'), $value->format('n'), $value->format('j'));
 			$result->setTime($value->format('G'), $value->format('i'), $value->format('s'), $value->format('u'));
-			$etaHours = intval(floor($offsetAbs / 3600));
-			$etaMinutes = intval(floor(((floatval($offsetAbs) / 3600.0) - $etaHours) * 60.0));
-			$etaSeconds = intval((floatval($offsetAbs / 60.0) - ($etaHours * 60) - $etaMinutes) * 60.0);
-			$offsetInterval = new \DateInterval("PT{$etaHours}H{$etaMinutes}M{$etaSeconds}S");
-			$offsetInterval->invert = $offset < 0 ? 1 : 0;
-			return $result->add($offsetInterval);
+			if ($moveTimeByZone) {
+				$offset = $fromUserInput
+					? $valueOffset - $userOffset
+					: $userOffset - $valueOffset;
+				$offsetAbs = abs($offset);
+				$etaHours = intval(floor($offsetAbs / 3600));
+				$etaMinutes = intval(floor(((floatval($offsetAbs) / 3600.0) - $etaHours) * 60.0));
+				$etaSeconds = intval((floatval($offsetAbs / 60.0) - ($etaHours * 60) - $etaMinutes) * 60.0);
+				$offsetInterval = new \DateInterval("PT{$etaHours}H{$etaMinutes}M{$etaSeconds}S");
+				$offsetInterval->invert = $offset < 0 ? 1 : 0;
+				$result = $result->add($offsetInterval);
+			}
+			return $result;
 		}
 	}
 

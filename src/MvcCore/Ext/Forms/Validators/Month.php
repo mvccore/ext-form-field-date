@@ -30,4 +30,5 @@ class Month extends \MvcCore\Ext\Forms\Validators\Date {
 		self::ERROR_DATE_TO_HIGH	=> "Field '{0}' requires month lower or equal to '{1}'.",
 		self::ERROR_DATE_STEP		=> "Field '{0}' requires month in predefined months interval '{1}' from start point '{2}'.",
 	];
+
 }

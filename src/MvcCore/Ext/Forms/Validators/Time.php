@@ -30,4 +30,12 @@ class Time extends \MvcCore\Ext\Forms\Validators\Date {
 		self::ERROR_DATE_TO_HIGH	=> "Field '{0}' requires day time lower or equal to '{1}'.",
 		self::ERROR_DATE_STEP		=> "Field '{0}' requires day time in predefined seconds interval '{1}' from start point '{2}'.",
 	];
+
+	/**
+	 * `TRUE`if value could contains any time,
+	 * for example hours, minutes, seconds or miliseconds.
+	 * @var bool
+	 */
+	protected static $valueWithTime = TRUE;
+
 }

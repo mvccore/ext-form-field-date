@@ -86,6 +86,13 @@ implements	\MvcCore\Ext\Forms\Fields\IFormat,
 		's' => '00-59',
 		'u' => '0-999999',
 	];
+
+	/**
+	 * `TRUE`if value could contains any time,
+	 * for example hours, minutes, seconds or miliseconds.
+	 * @var bool
+	 */
+	protected static $valueWithTime = FALSE;
 	
 	/**
 	 * String format mask to format given values in `Intl` extension `\DateTimeInterface` type
@@ -202,23 +209,35 @@ implements	\MvcCore\Ext\Forms\Fields\IFormat,
 	 * @return string|array|NULL Safe submitted value or `NULL` if not possible to return safe value.
 	 */
 	public function Validate ($rawSubmittedValue) {
-		$rawSubmittedValue = trim((string) $rawSubmittedValue);
-		$safeValue = preg_replace('#[^a-zA-Z0-9\:\.\-\,/ ]#', '', $rawSubmittedValue);
-		$safeValueLength = mb_strlen($safeValue);
-		if ($safeValueLength === 0) return NULL;
+		$safeValue = $this->validateGetSafeValue($rawSubmittedValue);
+		if ($safeValue === NULL) return NULL;
 		$userTimeZone = new \DateTimeZone(date_default_timezone_get());		
 		$date = $this->field->CreateFromInput($safeValue, $userTimeZone, TRUE);
-		if ($date === NULL || $safeValueLength !== mb_strlen($rawSubmittedValue)) {
+		if ($date === NULL || mb_strlen($safeValue) !== mb_strlen($rawSubmittedValue)) {
 			$this->field->AddValidationError(
 				static::GetErrorMessage(static::ERROR_DATE_INVALID),
 				[strtr($this->format, static::$errorMessagesFormatReplacements)]
 			);
 		} else {
-			$date = $this->ConvertTimeZone($date, TRUE);
-			$date = $this->checkMinMax($date);
-			$date = $this->checkStep($date);
+			$date = $this->ConvertTimeZone($date, TRUE, static::$valueWithTime);
+			$date = $this->validateMinMax($date);
+			$date = $this->validateStep($date);
 		}
 		return $date;
+	}
+
+	/**
+	 * Get safe value for datetime parsing.
+	 * @param  string|array $rawSubmittedValue
+	 * @return string|NULL
+	 */
+	protected function validateGetSafeValue ($rawSubmittedValue) {
+		$rawSubmittedValue = trim((string) $rawSubmittedValue);
+		$safeValue = preg_replace('#[^a-zA-Z0-9\:\.\-\,/ ]#', '', $rawSubmittedValue);
+		if (mb_strlen($safeValue) === 0) 
+			return NULL;
+		return $rawSubmittedValue;
+
 	}
 
 	/**
@@ -226,7 +245,7 @@ implements	\MvcCore\Ext\Forms\Fields\IFormat,
 	 * @param  \DateTimeInterface $date
 	 * @return \DateTimeInterface
 	 */
-	protected function checkMinMax ($date) {
+	protected function validateMinMax ($date) {
 		if ($this->min !== NULL && $date < $this->min) {
 			$this->field->AddValidationError(
 				static::GetErrorMessage(static::ERROR_DATE_TO_LOW),
@@ -247,7 +266,7 @@ implements	\MvcCore\Ext\Forms\Fields\IFormat,
 	 * @param  \DateTimeInterface $date
 	 * @return \DateTimeInterface
 	 */
-	protected function checkStep ($date) {
+	protected function validateStep ($date) {
 		if ($this->step !== NULL) {
 			$fieldValue = $this->field->GetValue();
 			if ($fieldValue instanceof \DateTime || $fieldValue instanceof \DateTimeImmutable) { // PHP 5.4 compatible

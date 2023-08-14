@@ -30,4 +30,5 @@ class Week extends \MvcCore\Ext\Forms\Validators\Date {
 		self::ERROR_DATE_TO_HIGH	=> "Field '{0}' requires week lower or equal to '{1}'.",
 		self::ERROR_DATE_STEP		=> "Field '{0}' requires week in predefined weeks interval '{1}' from start point '{2}'.",
 	];
+
 }
