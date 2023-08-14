@@ -43,4 +43,19 @@ class Month extends \MvcCore\Ext\Forms\Fields\Date {
 	 * @var \string[]|\Closure[]
 	 */
 	protected $validators = ['Month'];
+	
+	/**
+	 * Round typed value into proper date/datetime value to be possible 
+	 * to compare server and user input values correctly later in submit.
+	 * @param  \DateTime|\DateTimeImmutable $value
+	 * @return \DateTime|\DateTimeImmutable
+	 */
+	public function RoundValue ($value) {
+		$rounded = clone $value;
+		$years = intval($value->format('Y'));
+		$months = intval($value->format('n'));
+		$rounded->setDate($years, $months, 1);
+		return $rounded->setTime(0, 0, 0, 0);
+	}
+
 }

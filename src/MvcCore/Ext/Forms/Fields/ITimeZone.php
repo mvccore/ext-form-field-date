@@ -52,9 +52,10 @@ interface ITimeZone {
 	 * submitted value to server object time zone.
 	 * @param  \DateTimeInterface $value 
 	 * @param  bool	              $fromUserInput 
+	 * @param  bool               $moveTimeByZone
 	 * @return \DateTimeInterface
 	 */
-	public function ConvertTimeZone ($value, $fromUserInput = FALSE);
+	public function ConvertTimeZone ($value, $fromUserInput = FALSE, $moveTimeByZone = TRUE);
 
 	/**
 	 * Get value time zone offset as an integer.

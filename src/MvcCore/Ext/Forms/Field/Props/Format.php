@@ -72,7 +72,7 @@ trait Format {
 	 */
 	public function Format ($value) {
 		if ($value === NULL) return '';
-		$userValue = $this->ConvertTimeZone($value, FALSE);
+		$userValue = $this->ConvertTimeZone($value, FALSE, static::$valueWithTime);
 		return $userValue->format($this->format ?: static::$defaultFormat);
 	}
 	
@@ -96,7 +96,10 @@ trait Format {
 			$newValue->setTimestamp($inputValue);
 		} else if (is_string($inputValue)) {
 			$format = $this->format ?: static::$defaultFormat;
-			$parsedValue = @date_create_from_format($format, $inputValue, $timeZone);
+			$format = '!' . ltrim($format, '!'); // to reset all other values not included in format into zeros
+			$parsedValue = $timeZone === NULL
+				? @\DateTime::createFromFormat($format, $inputValue)
+				: \DateTime::createFromFormat($format, $inputValue, $timeZone);
 			if ($parsedValue !== FALSE) {
 				$newValue = $parsedValue;
 			} else {

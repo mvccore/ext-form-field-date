@@ -108,7 +108,7 @@ trait MinMaxStepDates {
 			$this instanceof \MvcCore\Ext\Forms\Fields\IFormat
 		)
 			? $this->CreateFromInput($min, $this->timeZone, TRUE)
-			: $min;
+			: $this->RoundValue($min);
 		return $this;
 	}
 
@@ -152,7 +152,7 @@ trait MinMaxStepDates {
 			$this instanceof \MvcCore\Ext\Forms\Fields\IFormat
 		)
 			? $this->CreateFromInput($max, $this->timeZone, TRUE)
-			: $max;
+			: $this->RoundValue($max);
 		return $this;
 	}
 

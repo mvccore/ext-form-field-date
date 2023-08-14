@@ -57,6 +57,13 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	protected static $defaultFormat = 'Y-m-d';
 
 	/**
+	 * `TRUE`if value could contains any time,
+	 * for example hours, minutes, seconds or miliseconds.
+	 * @var bool
+	 */
+	protected static $valueWithTime = FALSE;
+
+	/**
 	 * Possible values: `date` and types `datetime-local`, 
 	 * `time`, `week` and `month` in extended classes.
 	 * @see http://www.html5tutorial.info/html5-date.php
@@ -325,7 +332,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 		if (isset($cfg['max']))			$this->SetMax($cfg['max']);
 		if (isset($cfg['step']))		$this->SetStep($cfg['step']);
 		if (isset($cfg['timeZone']))	$this->SetTimezone($cfg['timeZone']);
-		unset($cfg['min'], $cfg['max'], $cfg['step'], $cfg['timezone']);
+		unset($cfg['min'], $cfg['max'], $cfg['step'], $cfg['timeZone']);
 		parent::__construct($cfg);
 	}
 
@@ -352,7 +359,19 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	public function SetValue ($value) {
 		/** @var \MvcCore\Ext\Forms\Fields\Date $this */
 		$this->value = $this->CreateFromInput($value, $this->timeZone, TRUE);
+		//$this->value = $this->RoundValue($value);
 		return $this;
+	}
+
+	/**
+	 * Round typed value into proper date/datetime value to be possible 
+	 * to compare server and user input values correctly later in submit.
+	 * @param  \DateTime|\DateTimeImmutable $value
+	 * @return \DateTime|\DateTimeImmutable
+	 */
+	public function RoundValue ($value) {
+		$rounded = clone $value;
+		return $rounded->setTime(0, 0, 0, 0);
 	}
 
 	/**

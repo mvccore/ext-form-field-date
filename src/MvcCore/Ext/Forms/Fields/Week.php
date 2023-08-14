@@ -43,4 +43,20 @@ class Week extends \MvcCore\Ext\Forms\Fields\Date {
 	 * @var \string[]|\Closure[]
 	 */
 	protected $validators = ['Week'];
+	
+	/**
+	 * Round typed value into proper date/datetime value to be possible 
+	 * to compare server and user input values correctly later in submit.
+	 * @param  \DateTime|\DateTimeImmutable $value
+	 * @return \DateTime|\DateTimeImmutable
+	 */
+	public function RoundValue ($value) {
+		$rounded = clone $value;
+		list($yearsStr, $weeksStr) = explode('-', $value->format('o-W'));
+		$years = intval($yearsStr);
+		$weeks = intval($weeksStr);
+		$rounded->setISODate($years, $weeks, 1);
+		return $rounded->setTime(0, 0, 0, 0);
+	}
+
 }

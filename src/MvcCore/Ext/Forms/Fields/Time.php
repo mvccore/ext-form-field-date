@@ -32,6 +32,13 @@ class Time extends \MvcCore\Ext\Forms\Fields\Date {
 	protected static $defaultFormat = 'H:i'; // 22:15
 
 	/**
+	 * `TRUE`if value could contains any time,
+	 * for example hours, minutes, seconds or miliseconds.
+	 * @var bool
+	 */
+	protected static $valueWithTime = TRUE;
+
+	/**
 	 * Possible values: `time`.
 	 * @var string
 	 */
@@ -43,4 +50,27 @@ class Time extends \MvcCore\Ext\Forms\Fields\Date {
 	 * @var \string[]|\Closure[]
 	 */
 	protected $validators = ['Time'];
+	
+	/**
+	 * Round typed value into proper date/datetime value to be possible 
+	 * to compare server and user input values correctly later in submit.
+	 * @param  \DateTime|\DateTimeImmutable $value
+	 * @return \DateTime|\DateTimeImmutable
+	 */
+	public function RoundValue ($value) {
+		$hasSeconds = FALSE;
+		$hasMiliSeconds = FALSE;
+		if ($format = $this->GetFormat()) {
+			$hasSeconds = strrpos($format, 's') !== FALSE;
+			$hasMiliSeconds = strrpos($format, 'v') !== FALSE;
+		}
+		$rounded = clone $value;
+		$hours = intval($value->format('G'));
+		$minutes = intval(ltrim($value->format('i'), '0'));
+		$seconds = $hasSeconds ? intval(ltrim($value->format('s'), '0')) : 0;
+		$microSeconds = $hasMiliSeconds ? intval(ltrim($value->format('u'), '0')) : 0;
+		$rounded->setDate(1970, 1, 1);
+		return $rounded->setTime($hours, $minutes, $seconds, $microSeconds);
+	}
+
 }
