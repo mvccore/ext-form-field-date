@@ -282,7 +282,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * For `Week` and `Month` fields, step is `int`, number of weeks or months...
 	 * 
 	 * @param  string                        $list
-	 * Element `list` attribute value - the `<list>` element `id` attribute value.
+	 * `DataList` form instance or `DataList` field unique name.
 	 * 
 	 * @param  string                        $wrapper
 	 * Html code wrapper, wrapper has to contain replacement in string 
@@ -389,6 +389,12 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 				: static::$defaultFormat,
 			'timeZone'	=> $this->timeZone
 		];
+		if ($this->list !== NULL) {
+			$result['list'] = $this->list;
+			$listField = $this->form->GetField($this->list);
+			if ($listField instanceof \MvcCore\Ext\Forms\Fields\IOptions) 
+				$result['options'] = $listField->GetOptions();
+		}
 		return $result;
 	}
 
@@ -414,11 +420,18 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * @return string
 	 */
 	public function RenderControl () {
-		$fieldVarsToAttrs = [
-			'list',
-			'format'	=> 'data-format',
+		$listBefore = NULL;
+		if ($this->list !== NULL) {
+			$listBefore = $this->list;
+			$this->list = $this->form->GetField($this->list)->GetId();
+		}
+		$attrsStrItems = [
+			$this->RenderControlAttrsWithFieldVars([
+				'list',
+				'format'	=> 'data-format',
+			])
 		];
-		$attrsStrItems = [$this->RenderControlAttrsWithFieldVars($fieldVarsToAttrs)];
+		$this->list = $listBefore;
 		$dateProps = [
 			'min'	=> $this->min,
 			'max'	=> $this->max, 
