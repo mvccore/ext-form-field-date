@@ -44,7 +44,7 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 	 * Comparison by PHP function version_compare();
 	 * @see http://php.net/manual/en/function.version-compare.php
 	 */
-	const VERSION = '5.2.4';
+	const VERSION = '5.2.5';
 
 	/**
 	 * String format mask to format given values in `\DateTimeInterface` type for PHP `date_format()` function or 
@@ -334,6 +334,8 @@ implements	\MvcCore\Ext\Forms\Fields\IVisibleField,
 		if (isset($cfg['timeZone']))	$this->SetTimezone($cfg['timeZone']);
 		unset($cfg['min'], $cfg['max'], $cfg['step'], $cfg['timeZone']);
 		parent::__construct($cfg);
+		if ($this->list !== NULL)
+			$this->SetList($this->list);
 	}
 
 	/**
